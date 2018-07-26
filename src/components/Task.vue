@@ -28,15 +28,15 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 
-// import { Plan } from "@/types";
+import { Plan } from "@/types";
 
-interface Plan {
-  description: string;
-  done: boolean;
-}
+// interface Plan {
+//   description: string;
+//   done: boolean;
+// }
 
 @Component
 export default class Task extends Vue {
-    @Prop() plan!: Plan
+  @Prop() plan!: Plan;
 }
 </script>
