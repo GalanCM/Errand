@@ -25,15 +25,15 @@ header {
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Prop } from "vue-property-decorator"
+import { Prop } from "vue-property-decorator";
 
-import { Plan } from "@/types"
+import { Plan } from "@/types";
 
-import Task from "@/components/Task.vue"
+import Task from "@/components/Task.vue";
 
 @Component({ components: { Task } })
 export default class DayOrganizer extends Vue {
-  @Prop() dayPlanner!: Plan[]
+  @Prop() private dayPlanner!: Plan[];
 }
 </script>
 

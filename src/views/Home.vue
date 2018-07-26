@@ -15,12 +15,12 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { State } from "vuex-class";
 
-import { DayPlanner } from "@/types"
+import { DayPlanner } from "@/types";
 
 import DayOrganizer from "@/components/DayOrganizer.vue";
 
 @Component({ components: { DayOrganizer } })
 export default class Organizer extends Vue {
-  @State('day_planners') planner!: DayPlanner[];
+  @State("day_planners") private planner!: DayPlanner[];
 }
 </script>

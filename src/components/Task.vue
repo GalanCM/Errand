@@ -30,13 +30,8 @@ import { Prop } from "vue-property-decorator";
 
 import { Plan } from "@/types";
 
-// interface Plan {
-//   description: string;
-//   done: boolean;
-// }
-
 @Component
 export default class Task extends Vue {
-  @Prop() plan!: Plan;
+  @Prop() private plan!: Plan;
 }
 </script>
