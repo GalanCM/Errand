@@ -1,24 +1,32 @@
 <template>
   <section class="day">
     <header>Today</header>
-    <Task v-for="(plan, index) in dayPlanner" :plan="plan" :key="index"></Task>
+    <main>
+      <Task v-for="(plan, index) in dayPlanner" :plan="plan" :key="index"></Task>
+    </main>
   </section>
 </template>
 
 <style lang="less" scoped>
 .day {
-  min-width: 480px;
+  min-width: 280px;
   width: 50%;
   margin: 20px auto;
-  border: 1px solid black;
   padding: 0;
+  box-shadow: 2px 2px 13px rgba(0, 0, 0, 0.15);
 }
+
 header {
   padding: 10px;
   font-size: 25px;
   font-weight: 600;
   background-color: #009086;
   color: white;
+}
+
+main {
+  padding: 5px 0;
+  border-left: 1px solid #009086;
 }
 </style>
 
