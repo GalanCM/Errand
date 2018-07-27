@@ -10,8 +10,6 @@
     ></textarea>
     <input type="checkbox" class="checkbox" v-model="details.done">
   </div>
-        <!-- ref="description" @input="updateResizeHeight" style="{height: resizeHeight}" -->
-
 </template>
 
 <style lang="less" scoped>
@@ -60,7 +58,7 @@ import { TaskData } from "@/types";
 export default class Task extends Vue {
   @Prop() private details!: TaskData;
 
-  @Watch("plan.description")
+  @Watch("details.description")
   private onDescriptionChanged() {
     const descriptionElement = this.$refs.description as HTMLElement;
     descriptionElement.style.height = "auto"; // behavioral fix

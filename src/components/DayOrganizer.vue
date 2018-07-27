@@ -1,6 +1,9 @@
 <template>
   <section class="day">
-    <header>Today</header>
+    <header>
+      <span class="name">Today</span>
+      <button @click="addTask">+</button>
+    </header>
     <main>
       <Task v-for="(task, index) in tasks" :details="task" :key="index"></Task>
     </main>
@@ -22,6 +25,19 @@ header {
   font-weight: 600;
   background-color: #009086;
   color: white;
+  display: flex;
+
+  .name {
+    flex-grow: 1;
+  }
+
+  button {
+    background-color: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: "Work Sans";
+    font-size: 28px;
+  }
 }
 
 main {
@@ -42,6 +58,15 @@ import Task from "@/components/Task.vue";
 @Component({ components: { Task } })
 export default class DayOrganizer extends Vue {
   private tasks: TaskData[] = this.$store.getters.getTasksByDate(new Date());
+
+  private addTask() {
+    this.$store.commit("addTask", { date: new Date(), order: this.tasks.length });
+    this.refreshTasks();
+  }
+
+  private refreshTasks() {
+    this.tasks = this.$store.getters.getTasksByDate(new Date());
+  }
 }
 </script>
 
