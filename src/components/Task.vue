@@ -70,5 +70,9 @@ export default class Task extends Vue {
   private mounted() {
     this.onDescriptionChanged();
   }
+
+  private updated() {
+    this.$store.commit("updateTask", this.details);
+  }
 }
 </script>

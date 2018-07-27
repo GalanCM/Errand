@@ -37,10 +37,17 @@ const getters = {
   }
 };
 
+const mutations = {
+  updateTask(state_: RootState, updatedTask: TaskData) {
+    let storedTask = state_.tasks.find((task) => task.id === updatedTask.id);
+    storedTask = { ...storedTask, ...updatedTask };
+  }
+};
+
 const store = {
   state,
   getters,
-  mutations: {},
+  mutations,
   actions: {}
 };
 
