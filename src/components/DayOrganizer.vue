@@ -18,7 +18,7 @@
 
 header {
   padding: 10px;
-  font-size: 25px;
+  font-size: 28px;
   font-weight: 600;
   background-color: #009086;
   color: white;

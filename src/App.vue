@@ -1,17 +1,29 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div> -->
     <router-view/>
   </div>
 </template>
+
+<style>
+@import url("https://fonts.googleapis.com/css?family=Zilla+Slab:300|Work+Sans:500");
+</style>
+
 
 <style lang="less">
 @import "/static/assets/normalize.css";
 
 :root {
-  font-family: Arial, sans-serif;
+  font-family: "Work Sans", Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header {
+  font-family: "Zilla Slab", Arial, sans-serif;
+  letter-spacing: 0.05em;
 }
 </style>
