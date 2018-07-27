@@ -1,28 +1,45 @@
 import Vue from "vue";
-import Vuex, { StoreOptions } from "vuex";
-import { Planner } from "@/types";
+import Vuex from "vuex";
+import { RootState, TaskData } from "@/types";
 
 Vue.use(Vuex);
 
-const state: Planner = {
-  day_planners: [
+const state: RootState = {
+  tasks: [
     {
-      plans: [
-        {
-          description: "First Task",
-          done: false
-        },
-        {
-          description: "Second Task",
-          done: true
-        }
-      ]
+      id: 0,
+      description: "First Task",
+      date: new Date(),
+      order: 1,
+      done: false
+    },
+    {
+      id: 1,
+      description: "Second Task",
+      date: new Date(),
+      order: 1,
+      done: true
     }
   ]
 };
 
+const getters = {
+  getTasksByDate: (state_: RootState) => (date: Date) => {
+    return state_.tasks.filter((task: TaskData) => task.date.toDateString() === date.toDateString()).sort((a, b) => {
+      if (a.order > b.order) {
+        return 1;
+      } else if (a.order < b.order) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+  }
+};
+
 const store = {
   state,
+  getters,
   mutations: {},
   actions: {}
 };

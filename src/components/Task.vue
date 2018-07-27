@@ -1,14 +1,14 @@
 <template>
   <div class="task">
     <textarea
-      v-model="plan.description" 
+      v-model="details.description" 
       placeholder="Describe your new task." 
       class="description" 
-      :disabled="plan.done" 
+      :disabled="details.done" 
       ref="description"
       rows="1"
     ></textarea>
-    <input type="checkbox" class="checkbox" v-model="plan.done">
+    <input type="checkbox" class="checkbox" v-model="details.done">
   </div>
         <!-- ref="description" @input="updateResizeHeight" style="{height: resizeHeight}" -->
 
@@ -54,11 +54,11 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
 
-import { Plan } from "@/types";
+import { TaskData } from "@/types";
 
 @Component
 export default class Task extends Vue {
-  @Prop() private plan!: Plan;
+  @Prop() private details!: TaskData;
 
   @Watch("plan.description")
   private onDescriptionChanged() {

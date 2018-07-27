@@ -1,12 +1,11 @@
-export interface Plan {
+export interface TaskData {
+  id: number;
   description: string;
+  date: Date;
+  order: number;
   done: boolean;
 }
 
-export interface DayPlanner {
-  plans: Plan[];
-}
-
-export interface Planner {
-  day_planners: DayPlanner[];
+export interface RootState {
+  tasks: TaskData[];
 }

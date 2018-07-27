@@ -2,7 +2,7 @@
   <section class="day">
     <header>Today</header>
     <main>
-      <Task v-for="(plan, index) in dayPlanner" :plan="plan" :key="index"></Task>
+      <Task v-for="(task, index) in tasks" :details="task" :key="index"></Task>
     </main>
   </section>
 </template>
@@ -35,13 +35,13 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 
-import { Plan } from "@/types";
+import { TaskData } from "@/types";
 
 import Task from "@/components/Task.vue";
 
 @Component({ components: { Task } })
 export default class DayOrganizer extends Vue {
-  @Prop() private dayPlanner!: Plan[];
+  private tasks: TaskData[] = this.$store.getters.getTasksByDate(new Date());
 }
 </script>
 
