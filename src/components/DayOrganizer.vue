@@ -1,7 +1,7 @@
 <template>
   <section class="day">
     <header>
-      <span class="name">Today</span>
+      <span class="name">{{name}}</span>
       <button @click="addTask">+</button>
     </header>
     <main>
@@ -57,15 +57,39 @@ import Task from "@/components/Task.vue";
 
 @Component({ components: { Task } })
 export default class DayOrganizer extends Vue {
-  private tasks: TaskData[] = this.$store.getters.getTasksByDate(new Date());
+  @Prop() private dateModifier!: number;
+  private tasks!: TaskData[];
+
+  created() {
+    this.tasks = this.$store.getters.getTasksByDate(this.date);
+  }
+
+  get date() {
+    let date = new Date();
+    date.setDate(date.getDate() + this.dateModifier);
+
+    return date;
+  }
+
+  get name() {
+    if (this.dateModifier === 0) {
+      return "Today";
+    } else if (this.dateModifier === 1) {
+      return "Tomorrow";
+    } else {
+      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      return days[this.date.getDay()];
+    }
+  }
 
   private addTask() {
-    this.$store.commit("addTask", { date: new Date(), order: this.tasks.length });
+    this.$store.commit("addTask", { date: this.date, order: this.tasks.length });
     this.refreshTasks();
   }
 
   private refreshTasks() {
-    this.tasks = this.$store.getters.getTasksByDate(new Date());
+    this.tasks = this.$store.getters.getTasksByDate(this.date);
+    this.$forceUpdate();
   }
 }
 </script>

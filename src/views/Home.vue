@@ -1,13 +1,13 @@
 <template>
   <div class="app">
-    <!-- <DayOrganizer v-for="(day_planner, index) in planner" :dayPlanner="day_planner.plans" :key="index"></DayOrganizer> -->
-    <DayOrganizer></DayOrganizer>
+    <DayOrganizer v-for="dateModifier in 3" :dateModifier=" dateModifier - 1 " :key="dateModifier"></DayOrganizer>
   </div>
 </template>
 
 <style lang="less" scoped>
 .app {
   display: flex;
+  flex-direction: column;
 }
 </style>
 
