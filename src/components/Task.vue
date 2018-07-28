@@ -1,7 +1,7 @@
 <template>
   <div class="task">
     <textarea
-      v-model="details.description" 
+      v-model.lazy="details.description" 
       placeholder="Describe your new task." 
       class="description" 
       :disabled="details.done" 
@@ -63,6 +63,7 @@ export default class Task extends Vue {
     const descriptionElement = this.$refs.description as HTMLElement;
     descriptionElement.style.height = "auto"; // behavioral fix
     descriptionElement.style.height = descriptionElement.scrollHeight - 10 + "px";
+    console.log("update");
   }
 
   private mounted() {
