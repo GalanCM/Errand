@@ -1,12 +1,13 @@
 <template>
-  <div class="task">
+  <div class="task" :class="details.done ? 'done' : '' ">
     <textarea
       v-model.lazy="details.description" 
       placeholder="Describe your new task." 
-      class="description" 
+      class="description"
       :disabled="details.done" 
       ref="description"
       rows="1"
+      @input="onDescriptionChanged()"
     ></textarea>
     <input type="checkbox" class="checkbox" v-model="details.done">
   </div>
@@ -16,8 +17,14 @@
 .task {
   display: flex;
   flex-direction: row;
-  padding: 5px 10px;
+  padding: 2px 10px 2px 6px;
+  margin: 2px 0;
   font-size: 16px;
+  border-left: 4px solid transparent;
+
+  &:not(.done) {
+    border-color: #009086;
+  }
 
   .description {
     flex-grow: 1;
@@ -31,12 +38,13 @@
     border: 1px solid transparent;
 
     &:focus {
-      border-color: #ccc;
+      background-color: #e5e5e5;
+      border-radius: 2px;
     }
 
     &:disabled {
       background-color: transparent;
-      color: #709079;
+      color: rgba(0, 144, 134, 0.56);
     }
   }
 
@@ -63,7 +71,6 @@ export default class Task extends Vue {
     const descriptionElement = this.$refs.description as HTMLElement;
     descriptionElement.style.height = "auto"; // behavioral fix
     descriptionElement.style.height = descriptionElement.scrollHeight - 10 + "px";
-    console.log("update");
   }
 
   private mounted() {
