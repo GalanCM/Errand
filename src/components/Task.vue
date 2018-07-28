@@ -1,5 +1,5 @@
 <template>
-  <div class="task" :class="details.done ? 'done' : '' ">
+  <div class="task" :class="!details.done && details.description !== '' ? 'active' : '' ">
     <textarea
       v-model.lazy="details.description" 
       placeholder="Describe your new task." 
@@ -9,7 +9,7 @@
       rows="1"
       @input="onDescriptionChanged()"
     ></textarea>
-    <input type="checkbox" class="checkbox" v-model="details.done">
+    <input type="checkbox" class="checkbox" v-model="details.done" v-show="details.description !== ''">
   </div>
 </template>
 
@@ -22,7 +22,7 @@
   font-size: 16px;
   border-left: 4px solid transparent;
 
-  &:not(.done) {
+  &.active {
     border-color: #009086;
   }
 
