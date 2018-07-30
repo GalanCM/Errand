@@ -38,21 +38,14 @@ const getters = {
 };
 
 const mutations = {
-  addTask(state_: RootState, payload: any) {
-    const newTask: TaskData = {
-      id: window.performance.now(),
-      description: "",
-      date: payload.date,
-      order: payload.order,
-      done: false
-    };
-
-    state_.tasks.push(newTask);
-    return newTask;
-  },
   updateTask(state_: RootState, updatedTask: TaskData) {
-    let storedTask = state_.tasks.find((task) => task.id === updatedTask.id);
-    storedTask = { ...storedTask, ...updatedTask };
+    if (updatedTask.id === undefined) {
+      updatedTask.id = window.performance.now() + Math.random();
+      state_.tasks.push(updatedTask);
+    } else {
+      let storedTask = state_.tasks.find((task) => task.id === updatedTask.id);
+      storedTask = { ...storedTask, ...updatedTask };
+    }
   }
 };
 

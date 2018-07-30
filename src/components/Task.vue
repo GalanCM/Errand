@@ -7,7 +7,7 @@
       :disabled="details.done" 
       ref="description"
       rows="1"
-      @input="onDescriptionChanged()"
+      @input="onDescriptionInput()"
     ></textarea>
     <input type="checkbox" class="checkbox" v-model="details.done" v-show="details.description !== ''">
   </div>
@@ -66,15 +66,8 @@ import { TaskData } from "@/types";
 export default class Task extends Vue {
   @Prop() private details!: TaskData;
 
-  @Watch("details.description")
-  private onDescriptionChanged() {
-    const descriptionElement = this.$refs.description as HTMLElement;
-    descriptionElement.style.height = "auto"; // behavioral fix
-    descriptionElement.style.height = descriptionElement.scrollHeight - 10 + "px";
-  }
-
   private mounted() {
-    this.onDescriptionChanged();
+    this.onDescriptionInput();
     if (this.details.id === undefined) {
       (this.$refs.description as HTMLElement).focus();
     }
@@ -82,6 +75,19 @@ export default class Task extends Vue {
 
   private updated() {
     this.$store.commit("updateTask", this.details);
+  }
+
+  private onDescriptionInput() {
+    const descriptionElement = this.$refs.description as HTMLElement;
+    descriptionElement.style.height = "auto"; // behavioral fix
+    descriptionElement.style.height = descriptionElement.scrollHeight - 10 + "px";
+  }
+
+  @Watch("details.description")
+  private onDescriptionChanged(newDescription: string, oldDescription: string) {
+    if (oldDescription === "" && newDescription !== "") {
+      this.$emit("description-added");
+    }
   }
 }
 </script>

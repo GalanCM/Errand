@@ -8,7 +8,7 @@
       <Task v-for="(task, index) in tasks" :details="task" :key="index"></Task>
       <div>
         <button @click="createNewTask()" v-if="newTask === null">+ New Task</button>
-        <Task v-else :details="newTask"></Task>
+        <Task v-else :details="newTask" @description-added="closeNewTask"></Task>
       </div>
     </main>
   </section>
@@ -93,9 +93,16 @@ export default class DayOrganizer extends Vue {
       id: undefined,
       description: "",
       date: this.date,
-      order: -1,
+      order: this.tasks[this.tasks.length - 1].order + 1,
       done: false
     };
+  }
+
+  private closeNewTask() {
+    this.$nextTick(() => {
+      this.newTask = null;
+      this.refreshTasks();
+    });
   }
 
   private refreshTasks() {
