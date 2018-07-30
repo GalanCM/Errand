@@ -23,7 +23,7 @@
   border-left: 4px solid transparent;
 
   &.active {
-    border-color: #009086;
+    border-color: #006fc0;
   }
 
   .description {
