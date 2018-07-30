@@ -93,7 +93,7 @@ export default class DayOrganizer extends Vue {
       id: undefined,
       description: "",
       date: this.date,
-      order: this.tasks[this.tasks.length - 1].order + 1,
+      order: this.tasks.length > 0 ? this.tasks[this.tasks.length - 1].order + 1 : 0,
       done: false
     };
   }
