@@ -36,6 +36,7 @@ header {
 
 main {
   padding: 5px 0;
+  background-color: white;
 
   button {
     padding: 5px 10px;
