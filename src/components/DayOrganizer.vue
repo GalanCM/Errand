@@ -6,10 +6,8 @@
 
     <main>
       <Task v-for="(task, index) in tasks" :details="task" :key="index"></Task>
-      <div>
-        <button @click="createNewTask()" v-if="newTask === null">+ New Task</button>
-        <Task v-else :details="newTask" @description-blurred="closeNewTask"></Task>
-      </div>
+      <button @click="createNewTask()" v-if="newTask === null">+ New Task</button>
+      <Task v-else :details="newTask" @description-blurred="closeNewTask"></Task>
     </main>
   </section>
 </template>

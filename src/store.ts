@@ -24,7 +24,6 @@ const state: RootState = {
 };
 
 const getTasksByDate = (state_: RootState, date: Date) => {
-  console.log(state_.tasks.filter((task: TaskData) => task.date.toDateString() === date.toDateString()));
   return state_.tasks.filter((task: TaskData) => task.date.toDateString() === date.toDateString()).sort((a, b) => {
     if (a.order > b.order) {
       return 1;
