@@ -8,6 +8,7 @@
       ref="description"
       rows="1"
       @input="onDescriptionInput()"
+      @blur="onDescriptionBlurred()"
     ></textarea>
     <input type="checkbox" class="checkbox" v-model="details.done" v-show="details.description !== ''">
   </div>
@@ -83,11 +84,8 @@ export default class Task extends Vue {
     descriptionElement.style.height = descriptionElement.scrollHeight - 10 + "px";
   }
 
-  @Watch("details.description")
-  private onDescriptionChanged(newDescription: string, oldDescription: string) {
-    if (oldDescription === "" && newDescription !== "") {
-      this.$emit("description-added");
-    }
+  private onDescriptionBlurred(newDescription: string, oldDescription: string) {
+    this.$emit("description-blurred");
   }
 }
 </script>
