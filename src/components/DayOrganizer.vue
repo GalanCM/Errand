@@ -42,7 +42,7 @@ header {
 
 main {
   padding: 5px 0;
-  // border-left: 1px solid #009086;
+  background-color: white;
 }
 </style>
 
