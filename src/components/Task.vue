@@ -75,6 +75,9 @@ export default class Task extends Vue {
 
   private mounted() {
     this.onDescriptionChanged();
+    if (this.details.id === undefined) {
+      (this.$refs.description as HTMLElement).focus();
+    }
   }
 
   private updated() {

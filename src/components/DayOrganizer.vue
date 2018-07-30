@@ -2,10 +2,14 @@
   <section class="day">
     <header>
       <span class="name">{{name}}</span>
-      <button @click="addTask">+</button>
     </header>
+
     <main>
       <Task v-for="(task, index) in tasks" :details="task" :key="index"></Task>
+      <div>
+        <button @click="createNewTask()" v-if="newTask === null">+ New Task</button>
+        <Task v-else :details="newTask"></Task>
+      </div>
     </main>
   </section>
 </template>
@@ -30,19 +34,20 @@ header {
   .name {
     flex-grow: 1;
   }
-
-  button {
-    background-color: transparent;
-    border: none;
-    color: rgba(255, 255, 255, 0.9);
-    font-family: "Work Sans";
-    font-size: 28px;
-  }
 }
 
 main {
   padding: 5px 0;
-  // border-left: 1px solid #009086;
+
+  button {
+    padding: 5px 10px;
+    background-color: #e5e5e5;
+    border: none;
+    color: #006fc0;
+    font-size: 16px;
+    font-weight: 800;
+    font-family: "Work Sans", Arial, sans-serif;
+  }
 }
 </style>
 
@@ -59,6 +64,7 @@ import Task from "@/components/Task.vue";
 export default class DayOrganizer extends Vue {
   @Prop() private dateModifier!: number;
   private tasks!: TaskData[];
+  private newTask: TaskData | null = null;
 
   created() {
     this.tasks = this.$store.getters.getTasksByDate(this.date);
@@ -82,9 +88,14 @@ export default class DayOrganizer extends Vue {
     }
   }
 
-  private addTask() {
-    this.$store.commit("addTask", { date: this.date, order: this.tasks.length });
-    this.refreshTasks();
+  private createNewTask() {
+    this.newTask = {
+      id: undefined,
+      description: "",
+      date: this.date,
+      order: -1,
+      done: false
+    };
   }
 
   private refreshTasks() {

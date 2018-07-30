@@ -1,5 +1,5 @@
 export interface TaskData {
-  id: number;
+  id?: number;
   description: string;
   date: Date;
   order: number;
