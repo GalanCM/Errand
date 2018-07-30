@@ -55,6 +55,7 @@ main {
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
+import { namespace } from "vuex-class";
 
 import { TaskData } from "@/types";
 
@@ -63,11 +64,18 @@ import Task from "@/components/Task.vue";
 @Component({ components: { Task } })
 export default class DayOrganizer extends Vue {
   @Prop() private dateModifier!: number;
-  private tasks!: TaskData[];
   private newTask: TaskData | null = null;
 
-  created() {
-    this.tasks = this.$store.getters.getTasksByDate(this.date);
+  get tasks() {
+    if (this.dateModifier === 0) {
+      return this.$store.getters.getTodaysTasks;
+    } else if (this.dateModifier === 1) {
+      return this.$store.getters.getTomorrowsTasks;
+    } else if (this.dateModifier === 2) {
+      return this.$store.getters.getNextDaysTasks;
+    } else {
+      return [];
+    }
   }
 
   get date() {
@@ -101,13 +109,7 @@ export default class DayOrganizer extends Vue {
   private closeNewTask() {
     this.$nextTick(() => {
       this.newTask = null;
-      this.refreshTasks();
     });
-  }
-
-  private refreshTasks() {
-    this.tasks = this.$store.getters.getTasksByDate(this.date);
-    this.$forceUpdate();
   }
 }
 </script>

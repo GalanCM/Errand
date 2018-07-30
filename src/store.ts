@@ -23,17 +23,36 @@ const state: RootState = {
   ]
 };
 
+const getTasksByDate = (state_: RootState, date: Date) => {
+  console.log(state_.tasks.filter((task: TaskData) => task.date.toDateString() === date.toDateString()));
+  return state_.tasks.filter((task: TaskData) => task.date.toDateString() === date.toDateString()).sort((a, b) => {
+    if (a.order > b.order) {
+      return 1;
+    } else if (a.order < b.order) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+};
+
 const getters = {
   getTasksByDate: (state_: RootState) => (date: Date) => {
-    return state_.tasks.filter((task: TaskData) => task.date.toDateString() === date.toDateString()).sort((a, b) => {
-      if (a.order > b.order) {
-        return 1;
-      } else if (a.order < b.order) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
+    return getTasksByDate(state_, date);
+  },
+  getTodaysTasks: (state_: RootState) => {
+    let date = new Date(Date.now());
+    return getTasksByDate(state_, date);
+  },
+  getTomorrowsTasks: (state_: RootState) => {
+    let date = new Date(Date.now());
+    date.setDate(date.getDate() + 1);
+    return getTasksByDate(state_, date);
+  },
+  getNextDaysTasks: (state_: RootState) => {
+    let date = new Date(Date.now());
+    date.setDate(date.getDate() + 2);
+    return getTasksByDate(state_, date);
   }
 };
 
