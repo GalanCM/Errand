@@ -2,10 +2,12 @@
   <section class="day">
     <header>
       <span class="name">{{name}}</span>
-      <button @click="addTask">+</button>
     </header>
+
     <main>
       <Task v-for="(task, index) in tasks" :details="task" :key="index"></Task>
+      <button @click="createNewTask()" v-if="newTask === null">+ New Task</button>
+      <Task v-else :details="newTask" @description-blurred="closeNewTask"></Task>
     </main>
   </section>
 </template>
@@ -30,19 +32,21 @@ header {
   .name {
     flex-grow: 1;
   }
-
-  button {
-    background-color: transparent;
-    border: none;
-    color: rgba(255, 255, 255, 0.9);
-    font-family: "Work Sans";
-    font-size: 28px;
-  }
 }
 
 main {
   padding: 5px 0;
   background-color: white;
+
+  button {
+    padding: 5px 10px;
+    background-color: #e5e5e5;
+    border: none;
+    color: #006fc0;
+    font-size: 16px;
+    font-weight: 800;
+    font-family: "Work Sans", Arial, sans-serif;
+  }
 }
 </style>
 
@@ -50,6 +54,7 @@ main {
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
+import { namespace } from "vuex-class";
 
 import { TaskData } from "@/types";
 
@@ -58,10 +63,18 @@ import Task from "@/components/Task.vue";
 @Component({ components: { Task } })
 export default class DayOrganizer extends Vue {
   @Prop() private dateModifier!: number;
-  private tasks!: TaskData[];
+  private newTask: TaskData | null = null;
 
-  created() {
-    this.tasks = this.$store.getters.getTasksByDate(this.date);
+  get tasks() {
+    if (this.dateModifier === 0) {
+      return this.$store.getters.getTodaysTasks;
+    } else if (this.dateModifier === 1) {
+      return this.$store.getters.getTomorrowsTasks;
+    } else if (this.dateModifier === 2) {
+      return this.$store.getters.getNextDaysTasks;
+    } else {
+      return [];
+    }
   }
 
   get date() {
@@ -82,14 +95,20 @@ export default class DayOrganizer extends Vue {
     }
   }
 
-  private addTask() {
-    this.$store.commit("addTask", { date: this.date, order: this.tasks.length });
-    this.refreshTasks();
+  private createNewTask() {
+    this.newTask = {
+      id: undefined,
+      description: "",
+      date: this.date,
+      order: this.tasks.length > 0 ? this.tasks[this.tasks.length - 1].order + 1 : 0,
+      done: false
+    };
   }
 
-  private refreshTasks() {
-    this.tasks = this.$store.getters.getTasksByDate(this.date);
-    this.$forceUpdate();
+  private closeNewTask() {
+    this.$nextTick(() => {
+      this.newTask = null;
+    });
   }
 }
 </script>

@@ -24,7 +24,7 @@ h4,
 h5,
 h6,
 header {
-  font-family: "Zilla Slab", Arial, sans-serif;
+  font-family: "Zilla Slab", Helvetica, sans-serif;
   letter-spacing: 0.05em;
 }
 </style>

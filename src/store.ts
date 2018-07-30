@@ -23,36 +23,47 @@ const state: RootState = {
   ]
 };
 
+const getTasksByDate = (state_: RootState, date: Date) => {
+  return state_.tasks.filter((task: TaskData) => task.date.toDateString() === date.toDateString()).sort((a, b) => {
+    if (a.order > b.order) {
+      return 1;
+    } else if (a.order < b.order) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+};
+
 const getters = {
   getTasksByDate: (state_: RootState) => (date: Date) => {
-    return state_.tasks.filter((task: TaskData) => task.date.toDateString() === date.toDateString()).sort((a, b) => {
-      if (a.order > b.order) {
-        return 1;
-      } else if (a.order < b.order) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
+    return getTasksByDate(state_, date);
+  },
+  getTodaysTasks: (state_: RootState) => {
+    let date = new Date(Date.now());
+    return getTasksByDate(state_, date);
+  },
+  getTomorrowsTasks: (state_: RootState) => {
+    let date = new Date(Date.now());
+    date.setDate(date.getDate() + 1);
+    return getTasksByDate(state_, date);
+  },
+  getNextDaysTasks: (state_: RootState) => {
+    let date = new Date(Date.now());
+    date.setDate(date.getDate() + 2);
+    return getTasksByDate(state_, date);
   }
 };
 
 const mutations = {
-  addTask(state_: RootState, payload: any) {
-    const newTask: TaskData = {
-      id: window.performance.now(),
-      description: "",
-      date: payload.date,
-      order: payload.order,
-      done: false
-    };
-
-    state_.tasks.push(newTask);
-    return newTask;
-  },
   updateTask(state_: RootState, updatedTask: TaskData) {
-    let storedTask = state_.tasks.find((task) => task.id === updatedTask.id);
-    storedTask = { ...storedTask, ...updatedTask };
+    if (updatedTask.id === undefined) {
+      updatedTask.id = window.performance.now() + Math.random();
+      state_.tasks.push(updatedTask);
+    } else {
+      let storedTask = state_.tasks.find((task) => task.id === updatedTask.id);
+      storedTask = { ...storedTask, ...updatedTask };
+    }
   }
 };
 
