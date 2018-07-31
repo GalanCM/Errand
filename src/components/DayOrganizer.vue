@@ -88,7 +88,7 @@ export default class DayOrganizer extends Vue {
   }
 
   get date() {
-    let date = new Date();
+    const date = new Date();
     date.setDate(date.getDate() + this.dateModifier);
 
     return date;
@@ -100,8 +100,8 @@ export default class DayOrganizer extends Vue {
     } else if (this.dateModifier === 1) {
       return "Tomorrow";
     } else {
-      var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      return days[this.date.getDay()];
+      const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      return DAYS[this.date.getDay()];
     }
   }
 

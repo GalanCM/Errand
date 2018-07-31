@@ -13,6 +13,8 @@
     "no-consecutive-blank-lines": false,
     "trailing-comma": false,
     "no-any": false,
-    "strict-property-initialization": false
+    "strict-property-initialization": false,
+    "class-name": true,
+    "variable-name": true
   }
 }
