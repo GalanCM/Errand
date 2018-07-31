@@ -6,7 +6,7 @@
 
     <main>
       <Task v-for="(task, index) in tasks" :details="task" :key="index"></Task>
-      <button @click="createNewTask()" v-if="newTask === null">+ New Task</button>
+      <button class="new-button" @click="createNewTask()" v-if="newTask === null">+ New Task</button>
       <Task v-else :details="newTask" @description-blurred="closeNewTask"></Task>
     </main>
   </section>
@@ -16,14 +16,14 @@
 .day {
   min-width: 280px;
   width: 50%;
-  margin: 20px auto;
+  margin: 10px auto;
   padding: 0;
   box-shadow: 2px 2px 13px rgba(0, 0, 0, 0.15);
 }
 
 header {
-  padding: 10px;
-  font-size: 28px;
+  padding: 6px 10px;
+  font-size: 26px;
   font-weight: 600;
   background-color: #009086;
   color: white;
@@ -38,7 +38,7 @@ main {
   padding: 5px 0;
   background-color: white;
 
-  button {
+  .new-button {
     padding: 5px 10px;
     background-color: #e5e5e5;
     border: none;
@@ -46,6 +46,16 @@ main {
     font-size: 16px;
     font-weight: 800;
     font-family: "Work Sans", Arial, sans-serif;
+
+    &:not(:first-child) {
+      margin-top: 2px;
+    }
+  }
+
+  .task {
+    &:last-child {
+      padding-bottom: 0;
+    }
   }
 }
 </style>
