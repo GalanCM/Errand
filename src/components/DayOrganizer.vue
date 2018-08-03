@@ -6,13 +6,15 @@
 
     <main>
       <div class="tasks">
-        <Task
-          v-for="(task, index) in tasks" 
-          :details="task"
-          :key="index"
-          style="{order: task.order * 2}" 
-          @order-changed="updateOrder"
-        ></Task>
+        <transition-group name="task-transition" tag="div">
+          <Task
+            v-for="task in tasks" 
+            :details="task"
+            :key="task.id"
+            style="{order: task.order * 2}" 
+            @order-changed="updateOrder"
+          ></Task>
+        </transition-group>
       </div>
       <button class="new-button" @click="createNewTask()" v-if="newTask === null">+ New Task</button>
       <Task v-else :details="newTask" @description-blurred="closeNewTask"></Task>
@@ -69,6 +71,18 @@ main {
       padding-bottom: 0;
     }
   }
+}
+
+// TRANSITIONS
+.task-transition-move {
+  transition: 300ms transform ease-out;
+}
+.task-transition-enter,
+.task-transition-leave-to {
+  opacity: 0;
+}
+.task-transition-enter-active {
+  transition: 1000ms opacity ease-in;
 }
 </style>
 
@@ -136,6 +150,10 @@ export default class DayOrganizer extends Vue {
 
   private updateOrder() {
     this.$store.commit("normalizeOrder", this.tasks);
+  }
+
+  public flip() {
+    this.tasks[0].order = 10;
   }
 }
 </script>

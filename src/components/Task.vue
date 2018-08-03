@@ -1,5 +1,5 @@
 <template>
-  <drop @dragenter="handleDragEnter" @dragleave="handleDragLeave">
+  <drop @dragenter="handleDragEnter">
     <drag 
       @dragstart="handleDragStart" 
       @dragend="handleDragEnd"
@@ -28,8 +28,9 @@
   flex-direction: row;
   padding: 2px 10px 2px 6px;
   margin: 2px 0;
-  font-size: 16px;
   border-left: 4px solid transparent;
+  font-size: 16px;
+  background-color: white;
 
   &.active {
     border-color: #006fc0;
@@ -103,6 +104,7 @@ export default class Task extends Vue {
 
   private handleDragStart(transferData: any, event: DragEvent) {
     (this.$refs.description as HTMLElement).blur();
+    this.$el.style.opacity = "0.2";
   }
   private handleDragEnter(transferData: { details: TaskData }, event: DragEvent) {
     if (this.details.id === transferData.details.id || this.blockReordering === true) {
@@ -122,6 +124,7 @@ export default class Task extends Vue {
   }
   private handleDragEnd(transferData: any, event: DragEvent) {
     this.$emit("order-changed");
+    this.$el.style.opacity = "1";
   }
 }
 </script>
