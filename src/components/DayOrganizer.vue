@@ -82,7 +82,7 @@ main {
   opacity: 0;
 }
 .task-transition-enter-active {
-  transition: 1000ms opacity ease-in;
+  transition: 700ms opacity ease-in;
 }
 </style>
 
