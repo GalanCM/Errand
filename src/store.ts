@@ -17,7 +17,7 @@ const state: RootState = {
       id: 1,
       description: "Second Task",
       date: new Date(),
-      order: 1,
+      order: 2,
       done: true
     }
   ]
@@ -63,6 +63,31 @@ const mutations = {
     } else {
       let storedTask = localState.tasks.find((task) => task.id === updatedTask.id);
       storedTask = { ...storedTask, ...updatedTask };
+    }
+  },
+  normalizeOrder(localState: RootState) {
+    const reorderedTasks = localState.tasks.map((task) => [task.id, task.order]);
+    reorderedTasks.sort((a: Array<number | undefined>, b: Array<number | undefined>) => {
+      if (a === undefined || b === undefined) {
+        return 0;
+        // @ts-ignore: a & b cannot be undefined at this point
+      } else if (a[1] < b[1]) {
+        return -1;
+        // @ts-ignore: a & b cannot be undefined at this point
+      } else if (a[1] > b[1]) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    for (const i of reorderedTasks.keys()) {
+      const sortedTaskId = reorderedTasks[i][0];
+      for (const stateTask of localState.tasks) {
+        if (sortedTaskId === stateTask.id) {
+          stateTask.order = i;
+        }
+      }
     }
   }
 };

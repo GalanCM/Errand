@@ -15,6 +15,13 @@
     "no-any": false,
     "strict-property-initialization": false,
     "class-name": true,
-    "variable-name": true
+    "variable-name": true,
+    "max-line-length": [
+      true,
+      {
+        "limit": 120,
+        "ignore-pattern": "//"
+      }
+    ]
   }
 }

@@ -5,7 +5,15 @@
     </header>
 
     <main>
-      <Task v-for="(task, index) in tasks" :details="task" :key="index"></Task>
+      <div class="tasks">
+        <Task
+          v-for="(task, index) in tasks" 
+          :details="task"
+          :key="index"
+          :style="{order: task.order * 2}" 
+          @order-changed="updateOrder"
+        ></Task>
+      </div>
       <button class="new-button" @click="createNewTask()" v-if="newTask === null">+ New Task</button>
       <Task v-else :details="newTask" @description-blurred="closeNewTask"></Task>
     </main>
@@ -38,6 +46,10 @@ main {
   padding: 5px 0;
   background-color: white;
 
+  .tasks {
+    display: flex;
+    flex-direction: column;
+  }
   .new-button {
     padding: 5px 10px;
     background-color: #e5e5e5;
@@ -76,6 +88,7 @@ export default class DayOrganizer extends Vue {
   private newTask: TaskData | null = null;
 
   get tasks() {
+    const tasks: TaskData[] = [];
     if (this.dateModifier === 0) {
       return this.$store.getters.getTodaysTasks;
     } else if (this.dateModifier === 1) {
@@ -119,6 +132,10 @@ export default class DayOrganizer extends Vue {
     this.$nextTick(() => {
       this.newTask = null;
     });
+  }
+
+  private updateOrder() {
+    this.$store.commit("normalizeOrder", this.tasks);
   }
 }
 </script>

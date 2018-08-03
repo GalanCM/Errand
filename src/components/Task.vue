@@ -1,17 +1,25 @@
 <template>
-  <div class="task" :class="!details.done && details.description !== '' ? 'active' : '' ">
-    <textarea
-      v-model.lazy="details.description" 
-      placeholder="Describe your new task." 
-      class="description"
-      :disabled="details.done" 
-      ref="description"
-      rows="1"
-      @input="onDescriptionInput()"
-      @blur="onDescriptionBlurred()"
-    ></textarea>
-    <input type="checkbox" class="checkbox" v-model="details.done" v-show="details.description !== ''">
-  </div>
+  <drop @dragover="handleDragOver" @dragleave="handleDragLeave">
+    <drag 
+      @dragstart="handleDragStart" 
+      @dragend="handleDragEnd"
+      :transfer-data="{ details }"
+    >
+      <div class="task" :class="!details.done && details.description !== '' ? 'active' : '' ">
+        <textarea
+          v-model.lazy="details.description" 
+          placeholder="Describe your new task." 
+          class="description"
+          :disabled="details.done" 
+          ref="description"
+          rows="1"
+          @input="onDescriptionInput"
+          @blur="onDescriptionBlurred"
+        ></textarea>
+        <input type="checkbox" class="checkbox" v-model="details.done" v-show="details.description !== ''">
+      </div>
+    </drag>
+  </drop>
 </template>
 
 <style lang="less" scoped>
@@ -75,6 +83,7 @@ export default class Task extends Vue {
   }
 
   private updated() {
+    this.onDescriptionInput(); // workaround for rendering quirk: resorting in Vue moved data between elements, leaving manually set style in place in place
     this.$store.commit("updateTask", this.details);
   }
 
@@ -86,6 +95,16 @@ export default class Task extends Vue {
 
   private onDescriptionBlurred(newDescription: string, oldDescription: string) {
     this.$emit("description-blurred");
+  }
+
+  private handleDragStart(transferData: any, event: DragEvent) {
+    (this.$refs.description as HTMLElement).blur();
+  }
+  private handleDragOver(transferData: { details: TaskData }, event: DragEvent) {
+    transferData.details.order = this.details.order - 0.5;
+  }
+  private handleDragEnd(transferData: any, event: DragEvent) {
+    this.$emit("order-changed");
   }
 }
 </script>
