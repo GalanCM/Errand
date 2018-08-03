@@ -88,7 +88,6 @@ export default class Task extends Vue {
   }
 
   private updated() {
-    this.onDescriptionInput(); // workaround for rendering quirk: resorting in Vue moved data between elements, transferring manually set style in to sorted component
     this.$store.commit("updateTask", this.details);
   }
 
@@ -111,7 +110,13 @@ export default class Task extends Vue {
       return;
     }
 
-    if (transferData.details.order > this.details.order) {
+    if (transferData.details.date > this.details.date) {
+      transferData.details.date = this.details.date;
+      transferData.details.order = this.details.order + 0.5;
+    } else if (transferData.details.date < this.details.date) {
+      transferData.details.date = this.details.date;
+      transferData.details.order = this.details.order - 0.5;
+    } else if (transferData.details.order > this.details.order) {
       transferData.details.order = this.details.order - 0.5;
     } else {
       transferData.details.order = this.details.order + 0.5;

@@ -115,7 +115,7 @@ export default class DayOrganizer extends Vue {
   }
 
   get date() {
-    const date = new Date();
+    const date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     date.setDate(date.getDate() + this.dateModifier);
 
     return date;
