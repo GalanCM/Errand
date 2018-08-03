@@ -1,25 +1,27 @@
 <template>
-  <section class="day">
-    <header>
-      <span class="name">{{name}}</span>
-    </header>
+  <drop @dragenter="handleDragEnter">
+    <section class="day">
+      <header>
+        <span class="name">{{name}}</span>
+      </header>
 
-    <main>
-      <div class="tasks">
-        <transition-group name="task-transition" tag="div">
-          <Task
-            v-for="task in tasks" 
-            :details="task"
-            :key="task.id"
-            style="{order: task.order * 2}" 
-            @order-changed="updateOrder"
-          ></Task>
-        </transition-group>
-      </div>
-      <button class="new-button" @click="createNewTask()" v-if="newTask === null">+ New Task</button>
-      <Task v-else :details="newTask" @description-blurred="closeNewTask"></Task>
-    </main>
-  </section>
+      <main>
+        <div class="tasks">
+          <transition-group name="task-transition" tag="div">
+            <Task
+              v-for="task in tasks" 
+              :details="task"
+              :key="task.id"
+              style="{order: task.order * 2}" 
+              @order-changed="updateOrder"
+            ></Task>
+          </transition-group>
+        </div>
+        <button class="new-button" @click="createNewTask()" v-if="newTask === null">+ New Task</button>
+        <Task v-else :details="newTask" @description-blurred="closeNewTask"></Task>
+      </main>
+    </section>
+  </drop>
 </template>
 
 <style lang="less" scoped>
@@ -152,8 +154,12 @@ export default class DayOrganizer extends Vue {
     this.$store.commit("normalizeOrder", this.tasks);
   }
 
-  public flip() {
-    this.tasks[0].order = 10;
+  private handleDragEnter(transferData: { details: TaskData }, event: DragEvent) {
+    console.log(this.tasks.length);
+    if (this.tasks.length === 0) {
+      transferData.details.date = this.date;
+      transferData.details.order = 0;
+    }
   }
 }
 </script>
