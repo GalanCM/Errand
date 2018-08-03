@@ -10,7 +10,7 @@
           v-for="(task, index) in tasks" 
           :details="task"
           :key="index"
-          :style="{order: task.order * 2}" 
+          style="{order: task.order * 2}" 
           @order-changed="updateOrder"
         ></Task>
       </div>

@@ -1,5 +1,5 @@
 <template>
-  <drop @dragover="handleDragOver" @dragleave="handleDragLeave">
+  <drop @dragenter="handleDragEnter" @dragleave="handleDragLeave">
     <drag 
       @dragstart="handleDragStart" 
       @dragend="handleDragEnd"
@@ -70,10 +70,14 @@ import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
 
 import { TaskData } from "@/types";
+import { performance } from "perf_hooks";
+import { setInterval } from "timers";
 
 @Component
 export default class Task extends Vue {
   @Prop() private details!: TaskData;
+
+  private blockReordering = false; // prevent @dragEnter from firing during reordering
 
   private mounted() {
     this.onDescriptionInput();
@@ -83,7 +87,7 @@ export default class Task extends Vue {
   }
 
   private updated() {
-    this.onDescriptionInput(); // workaround for rendering quirk: resorting in Vue moved data between elements, leaving manually set style in place in place
+    this.onDescriptionInput(); // workaround for rendering quirk: resorting in Vue moved data between elements, transferring manually set style in to sorted component
     this.$store.commit("updateTask", this.details);
   }
 
@@ -100,8 +104,21 @@ export default class Task extends Vue {
   private handleDragStart(transferData: any, event: DragEvent) {
     (this.$refs.description as HTMLElement).blur();
   }
-  private handleDragOver(transferData: { details: TaskData }, event: DragEvent) {
-    transferData.details.order = this.details.order - 0.5;
+  private handleDragEnter(transferData: { details: TaskData }, event: DragEvent) {
+    if (this.details.id === transferData.details.id || this.blockReordering === true) {
+      return;
+    }
+
+    if (transferData.details.order > this.details.order) {
+      transferData.details.order = this.details.order - 0.5;
+    } else {
+      transferData.details.order = this.details.order + 0.5;
+    }
+
+    this.blockReordering = true;
+    setTimeout(() => {
+      this.blockReordering = false;
+    }, 500);
   }
   private handleDragEnd(transferData: any, event: DragEvent) {
     this.$emit("order-changed");
