@@ -23,6 +23,7 @@
       </div>
     </drag>
   </drop>
+
 </template>
 
 <style lang="less" scoped>
@@ -85,6 +86,7 @@ export default class Task extends Vue {
   private blockReordering = false; // prevent @dragEnter from firing during reordering
   private draggable = true;
 
+
   private mounted() {
     this.onDescriptionInput();
     if (this.details.id === undefined) {
@@ -134,6 +136,16 @@ export default class Task extends Vue {
   }
   private handleDragEnd(transferData: any, event: DragEvent) {
     this.$emit("order-changed");
+  }
+
+  private onDescriptionInput() {
+    const descriptionElement = this.$refs.description as HTMLElement;
+    descriptionElement.style.height = "auto"; // behavioral fix
+    descriptionElement.style.height = descriptionElement.scrollHeight - 10 + "px";
+  }
+
+  private onDescriptionBlurred(newDescription: string, oldDescription: string) {
+    this.$emit("description-blurred");
   }
 }
 </script>

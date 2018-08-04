@@ -77,6 +77,7 @@ main {
 // TRANSITIONS
 .task-transition-move {
   transition: 300ms transform ease-out;
+
 }
 // .task-transition-enter,
 // .task-transition-leave-to {
@@ -105,6 +106,7 @@ export default class DayOrganizer extends Vue {
 
   get tasks() {
     const tasks: TaskData[] = [];
+
     if (this.dateModifier === 0) {
       return this.$store.getters.getTodaysTasks;
     } else if (this.dateModifier === 1) {
