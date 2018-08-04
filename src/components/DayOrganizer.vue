@@ -1,10 +1,10 @@
 <template>
-  <drop @dragenter="handleDragEnter">
-    <section class="day">
-      <header>
-        <span class="name">{{name}}</span>
-      </header>
+  <section class="day">
+    <header>
+      <span class="name">{{name}}</span>
+    </header>
 
+    <drop @dragenter="handleDragEnter" @drop="handleDrop">
       <main>
         <div class="tasks">
           <transition-group name="task-transition" tag="div">
@@ -12,7 +12,6 @@
               v-for="task in tasks" 
               :details="task"
               :key="task.id"
-              style="{order: task.order * 2}" 
               @order-changed="updateOrder"
             ></Task>
           </transition-group>
@@ -20,8 +19,8 @@
         <button class="new-button" @click="createNewTask()" v-if="newTask === null">+ New Task</button>
         <Task v-else :details="newTask" @description-blurred="closeNewTask"></Task>
       </main>
-    </section>
-  </drop>
+    </drop>
+  </section>
 </template>
 
 <style lang="less" scoped>
@@ -79,13 +78,13 @@ main {
 .task-transition-move {
   transition: 300ms transform ease-out;
 }
-.task-transition-enter,
-.task-transition-leave-to {
-  opacity: 0;
-}
-.task-transition-enter-active {
-  transition: 700ms opacity ease-in;
-}
+// .task-transition-enter,
+// .task-transition-leave-to {
+//   opacity: 0;
+// }
+// .task-transition-enter-active {
+//   transition: 700ms opacity ease-in;
+// }
 </style>
 
 <script lang="ts">
@@ -97,6 +96,7 @@ import { namespace } from "vuex-class";
 import { TaskData } from "@/types";
 
 import Task from "@/components/Task.vue";
+import { setTimeout } from "timers";
 
 @Component({ components: { Task } })
 export default class DayOrganizer extends Vue {
@@ -155,10 +155,21 @@ export default class DayOrganizer extends Vue {
   }
 
   private handleDragEnter(transferData: { details: TaskData }, event: DragEvent) {
-    console.log(this.tasks.length);
     if (this.tasks.length === 0) {
       transferData.details.date = this.date;
-      transferData.details.order = 0;
+      transferData.details.order = 0.5;
+    }
+  }
+
+  private handleDrop(transferData: any, event: DragEvent) {
+    this.updateOrder();
+
+    // hack to force DOM repaint on Firefox
+    if (this.tasks.length === 1) {
+      (this.$el.querySelector(".task") as HTMLElement).style.opacity = "0.21";
+      setTimeout(() => {
+        (this.$el.querySelector(".task") as HTMLElement).style.opacity = "1";
+      }, 50);
     }
   }
 }

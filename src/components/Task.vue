@@ -4,6 +4,7 @@
       @dragstart="handleDragStart" 
       @dragend="handleDragEnd"
       :transfer-data="{ details }"
+      :style="{opacity: this.details.order % 1 !== 0 ? 0.2 : 1}"
     >
       <div class="task" :class="!details.done && details.description !== '' ? 'active' : '' ">
         <textarea
@@ -103,7 +104,6 @@ export default class Task extends Vue {
 
   private handleDragStart(transferData: any, event: DragEvent) {
     (this.$refs.description as HTMLElement).blur();
-    this.$el.style.opacity = "0.2";
   }
   private handleDragEnter(transferData: { details: TaskData }, event: DragEvent) {
     if (this.details.id === transferData.details.id || this.blockReordering === true) {
@@ -129,7 +129,6 @@ export default class Task extends Vue {
   }
   private handleDragEnd(transferData: any, event: DragEvent) {
     this.$emit("order-changed");
-    this.$el.style.opacity = "1";
   }
 }
 </script>
