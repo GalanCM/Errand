@@ -5,6 +5,7 @@
       @dragend="handleDragEnd"
       :transfer-data="{ details }"
       :style="{opacity: this.details.order % 1 !== 0 ? 0.2 : 1}"
+      :draggable="draggable"
     >
       <div class="task" :class="!details.done && details.description !== '' ? 'active' : '' ">
         <textarea
@@ -16,6 +17,7 @@
           rows="1"
           @input="onDescriptionInput"
           @blur="onDescriptionBlurred"
+          @focus="draggable = false"
         ></textarea>
         <input type="checkbox" class="checkbox" v-model="details.done" v-show="details.description !== ''">
       </div>
@@ -27,6 +29,7 @@
 .task {
   display: flex;
   flex-direction: row;
+  align-items: center;
   padding: 2px 10px 2px 6px;
   margin: 2px 0;
   border-left: 4px solid transparent;
@@ -80,6 +83,7 @@ export default class Task extends Vue {
   @Prop() private details!: TaskData;
 
   private blockReordering = false; // prevent @dragEnter from firing during reordering
+  private draggable = true;
 
   private mounted() {
     this.onDescriptionInput();
@@ -100,6 +104,7 @@ export default class Task extends Vue {
 
   private onDescriptionBlurred(newDescription: string, oldDescription: string) {
     this.$emit("description-blurred");
+    this.draggable = true;
   }
 
   private handleDragStart(transferData: any, event: DragEvent) {
