@@ -94,7 +94,9 @@ export default class Task extends Vue {
   }
 
   private updated() {
-    this.$store.commit("updateTask", this.details);
+    if (this.details.description !== "") {
+      this.$store.commit("updateTask", this.details);
+    }
   }
 
   private onDescriptionInput() {
@@ -110,6 +112,7 @@ export default class Task extends Vue {
 
   private handleDragStart(transferData: any, event: DragEvent) {
     (this.$refs.description as HTMLElement).blur();
+    this.$emit("start-sorting");
   }
   private handleDragEnter(transferData: { details: TaskData }, event: DragEvent) {
     if (this.details.id === transferData.details.id || this.blockReordering === true) {
@@ -135,6 +138,7 @@ export default class Task extends Vue {
   }
   private handleDragEnd(transferData: any, event: DragEvent) {
     this.$store.commit("normalizeOrder");
+    this.$emit("stop-sorting");
   }
 }
 </script>

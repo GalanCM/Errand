@@ -37,40 +37,7 @@ const state: RootState = {
   ]
 };
 
-// const getTasksByDate = (localState: RootState, offset: number) => {
-//   const date = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-//   date.setDate(date.getDate() + this.dateModifier);
-
-//   return localState.tasks.filter((task: TaskData) => task.date.toDateString() === date.toDateString()).sort((a, b) => {
-//     if (a.order > b.order) {
-//       return 1;
-//     } else if (a.order < b.order) {
-//       return -1;
-//     } else {
-//       return 0;
-//     }
-//   });
-// };
-
-const getters = {
-  //   getTasksByDate: (localState: RootState) => (date: Date) => {
-  //     return getTasksByDate(localState, date);
-  //   },
-  //   getTodaysTasks: (localState: RootState) => {
-  //     const date = new Date(Date.now());
-  //     return getTasksByDate(localState, date);
-  //   },
-  //   getTomorrowsTasks: (localState: RootState) => {
-  //     const date = new Date(Date.now());
-  //     date.setDate(date.getDate() + 1);
-  //     return getTasksByDate(localState, date);
-  //   },
-  //   getNextDaysTasks: (localState: RootState) => {
-  //     const date = new Date(Date.now());
-  //     date.setDate(date.getDate() + 2);
-  //     return getTasksByDate(localState, date);
-  //   }
-};
+const getters = {};
 
 const mutations = {
   updateTask(localState: RootState, updatedTask: TaskData) {

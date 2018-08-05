@@ -5,16 +5,17 @@
 </template>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Zilla+Slab:300|Work+Sans:500");
+@import url("https://fonts.googleapis.com/css?family=Zilla+Slab:500|Work+Sans:500");
 </style>
 
 
 <style lang="less">
 @import "/static/assets/normalize.css";
 
-:root {
+body {
   font-family: "Work Sans", Arial, sans-serif;
   background-color: #e5e5e5;
+  margin: 0;
 }
 
 h1,

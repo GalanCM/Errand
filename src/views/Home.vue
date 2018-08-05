@@ -1,13 +1,14 @@
 <template>
-  <div class="app">
+  <div class="home">
     <Organizer></Organizer>
   </div>
 </template>
 
 <style lang="less" scoped>
-.app {
+.home {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 </style>
 
