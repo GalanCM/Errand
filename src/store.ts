@@ -8,14 +8,14 @@ const state: RootState = {
   tasks: [
     {
       id: 0,
-      description: "First Task",
+      description: "Active Task",
       date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
       order: 1,
       done: false
     },
     {
       id: 1,
-      description: "Second Task",
+      description: "Completed Task",
       date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
       order: 2,
       done: true

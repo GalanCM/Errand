@@ -1,35 +1,17 @@
 <template>
   <section class="organizer">
     <transition-group :name="isSorting ? 'slide-reorder' : ''" tag="div">
-      <h2 class="day-header" key="today">Today</h2>
-      <Task v-for="task in todayTasks" :details="task" :key="task.id" @start-sorting="startSorting" @stop-sorting="stopSorting"></Task>
-      <button class="new-button"
-        @click="createNewTaskWithDateOffeset(0)"
-        v-if="newTask === null || newTask.date.getTime() !== getDateWithOffset(0).getTime()"
-        key="buttonToday">
-        + New Task
-      </button>
-      <Task v-else class="new-task" :details="newTask" @description-blurred="closeNewTask" key="newTaskToday"></Task>
-
-      <h2 class="day-header" key="tomorrow">Tomorrow</h2>
-      <Task v-for="task in tomorrowTasks" :details="task" :key="task.id" @start-sorting="startSorting" @stop-sorting="stopSorting"></Task>
-      <button class="new-button"
-        @click="createNewTaskWithDateOffeset(1)"
-        v-if="newTask === null || newTask.date.getTime() !== getDateWithOffset(1).getTime()"
-        key="buttonTomorrow">
-        + New Task
-      </button>
-      <Task v-else class="new-task" :details="newTask" @description-blurred="closeNewTask" key="newTaskTommorrow"></Task>
-
-      <h2 class="day-header" key="nextDay">{{ getDayNameWithOffset(2) }}</h2>
-      <Task v-for="task in nextTasks" :details="task" :key="task.id" @start-sorting="startSorting" @stop-sorting="stopSorting"></Task>
-      <button class="new-button"
-        @click="createNewTaskWithDateOffeset(2)"
-        v-if="newTask === null || newTask.date.getTime() !== getDateWithOffset(2).getTime()"
-        key="buttonNext">
-        + New Task
-      </button>
-      <Task v-else class="new-task" :details="newTask" @description-blurred="closeNewTask" key="newTaskNext"></Task>
+      <template v-for="offset in [0,1,2]">
+        <h2 class="day-header" :key="'day' + offset">{{getDayNameFromOffset(offset)}}</h2>
+        <Task v-for="task in getTasksByDateOffset(offset)" :details="task" :key="task.id" @start-sorting="startSorting" @stop-sorting="stopSorting"></Task>
+        <button class="new-button"
+          @click="createNewTaskWithDateOffset(offset)"
+          v-if="newTask === null || newTask.date.getTime() !== getDateWithOffset(offset).getTime()"
+          :key="'button' + offset">
+          + New Task
+        </button>
+        <Task v-else class="new-task" :details="newTask" @description-blurred="closeNewTask" :key="'newTaskDay' + offset"></Task>
+      </template>
     </transition-group>
   </section>
 </template>
@@ -98,23 +80,19 @@ export default class Organizer extends Vue {
 
   private isSorting = false;
 
-  get todayTasks() {
-    return this.getTasksByDateOffset(0);
-  }
-  get tomorrowTasks() {
-    return this.getTasksByDateOffset(1);
-  }
-  get nextTasks() {
-    return this.getTasksByDateOffset(2);
-  }
-
   private getDateWithOffset(offset: number) {
     return new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + offset);
   }
 
-  private getDayNameWithOffset(offset: number) {
-    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    return days[this.getDateWithOffset(2).getDay()];
+  private getDayNameFromOffset(offset: number) {
+    if (offset === 0) {
+      return "Today";
+    } else if (offset === 1) {
+      return "Tomorrow";
+    } else {
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      return days[this.getDateWithOffset(offset).getDay()];
+    }
   }
 
   private getTasksByDateOffset(offset: number) {
@@ -131,7 +109,7 @@ export default class Organizer extends Vue {
     });
   }
 
-  private createNewTaskWithDateOffeset(offset: number) {
+  private createNewTaskWithDateOffset(offset: number) {
     const daysTasks = this.getTasksByDateOffset(offset);
 
     this.newTask = {
