@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <DayOrganizer v-for="dateModifier in 3" :dateModifier=" dateModifier - 1 " :key="dateModifier"></DayOrganizer>
+    <Organizer></Organizer>
   </div>
 </template>
 
@@ -16,8 +16,8 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { State } from "vuex-class";
 
-import DayOrganizer from "@/components/DayOrganizer.vue";
+import Organizer from "@/components/Organizer.vue";
 
-@Component({ components: { DayOrganizer } })
-export default class Organizer extends Vue {}
+@Component({ components: { Organizer } })
+export default class Home extends Vue {}
 </script>
