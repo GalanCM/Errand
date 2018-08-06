@@ -8,52 +8,29 @@ const state: RootState = {
   tasks: [
     {
       id: 0,
-      description: "First Task",
+      description: "Active Task",
       date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
       order: 1,
       done: false
     },
     {
       id: 1,
-      description: "Second Task",
+      description: "Completed Task",
       date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
       order: 2,
       done: true
+    },
+    {
+      id: 2,
+      description: "Tommorow Task",
+      date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1),
+      order: 2,
+      done: false
     }
   ]
 };
 
-const getTasksByDate = (localState: RootState, date: Date) => {
-  return localState.tasks.filter((task: TaskData) => task.date.toDateString() === date.toDateString()).sort((a, b) => {
-    if (a.order > b.order) {
-      return 1;
-    } else if (a.order < b.order) {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
-};
-
-const getters = {
-  getTasksByDate: (localState: RootState) => (date: Date) => {
-    return getTasksByDate(localState, date);
-  },
-  getTodaysTasks: (localState: RootState) => {
-    const date = new Date(Date.now());
-    return getTasksByDate(localState, date);
-  },
-  getTomorrowsTasks: (localState: RootState) => {
-    const date = new Date(Date.now());
-    date.setDate(date.getDate() + 1);
-    return getTasksByDate(localState, date);
-  },
-  getNextDaysTasks: (localState: RootState) => {
-    const date = new Date(Date.now());
-    date.setDate(date.getDate() + 2);
-    return getTasksByDate(localState, date);
-  }
-};
+const getters = {};
 
 const mutations = {
   updateTask(localState: RootState, updatedTask: TaskData) {
