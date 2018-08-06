@@ -1,25 +1,28 @@
 <template>
-  <section class="organizer">
-    <transition-group :name="isSorting ? 'slide-reorder' : ''" tag="div">
-      <template v-for="offset in [0,1,2]">
-        <h2 class="day-header" :key="'day' + offset">{{getDayNameFromOffset(offset)}}</h2>
-        <Task v-for="task in getTasksByDateOffset(offset)" :details="task" :key="task.id" @start-sorting="startSorting" @stop-sorting="stopSorting"></Task>
-        <drop v-if="getTasksByDateOffset(offset).length === 0"
-          class="drop"
-          :key="'drop' + offset"
-          @dragenter="handleDropEnter(offset, ...arguments)"
-        ></drop>
-        <button class="new-button"
-          @click="createNewTaskWithDateOffset(offset)"
-          v-if="newTask === null || newTask.date.getTime() !== getDateWithOffset(offset).getTime()"
-          :key="'button' + offset"
-        >
-          + New Task
-        </button>
-        <Task v-else class="new-task" :details="newTask" @description-blurred="closeNewTask" :key="'newTaskDay' + offset"></Task>
-      </template>
-    </transition-group>
-  </section>
+  <div>
+    <Trash v-show="isSorting" @task-deleted="isSorting = false"></Trash>
+    <section class="organizer">
+      <transition-group :name="isSorting ? 'slide-reorder' : ''" tag="div">
+        <template v-for="offset in [0,1,2]">
+          <h2 class="day-header" :key="'day' + offset">{{getDayNameFromOffset(offset)}}</h2>
+          <Task v-for="task in getTasksByDateOffset(offset)" :details="task" :key="task.id" @start-sorting="startSorting" @stop-sorting="stopSorting"></Task>
+          <drop v-if="getTasksByDateOffset(offset).length === 0"
+            class="drop"
+            :key="'drop' + offset"
+            @dragenter="handleDropEnter(offset, ...arguments)"
+          ></drop>
+          <button class="new-button"
+            @click="createNewTaskWithDateOffset(offset)"
+            v-if="newTask === null || newTask.date.getTime() !== getDateWithOffset(offset).getTime()"
+            :key="'button' + offset"
+          >
+            + New Task
+          </button>
+          <Task v-else class="new-task" :details="newTask" @description-blurred="closeNewTask" :key="'newTaskDay' + offset"></Task>
+        </template>
+      </transition-group>
+    </section>
+  </div>
 </template>
 
 <style lang="less" scoped>
@@ -63,14 +66,13 @@
 
 // TRANSITIONS
 .slide-reorder-move {
-  transition: 300ms transform ease-in-out;
+  transition: 200ms transform ease-in-out;
 }
 
 .drop {
   height: 36px;
   width: calc(100% - 10px);
   margin: 2px 10px 2px 0;
-  // background-color: #e5e5e5;
 }
 </style>
 
@@ -84,9 +86,10 @@ import { State } from "vuex-class";
 import { TaskData } from "@/types";
 
 import Task from "@/components/Task.vue";
+import Trash from "@/components/Trash.vue";
 import { setTimeout } from "timers";
 
-@Component({ components: { Task } })
+@Component({ components: { Task, Trash } })
 export default class Organizer extends Vue {
   @State("tasks") private tasks!: TaskData[];
   private newTask: TaskData | null = null;

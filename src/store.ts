@@ -42,6 +42,9 @@ const mutations = {
       storedTask = { ...storedTask, ...updatedTask };
     }
   },
+  removeTask(localState: RootState, task: TaskData) {
+    localState.tasks.splice(localState.tasks.indexOf(task), 1);
+  },
   normalizeOrder(localState: RootState) {
     const reorderedTasks = localState.tasks.map((task) => [task.id, task.order]);
     reorderedTasks.sort((a: Array<number | undefined>, b: Array<number | undefined>) => {
