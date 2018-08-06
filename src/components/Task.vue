@@ -43,6 +43,7 @@
   }
 
   .drag-indicator {
+    margin-left: -3px;
     padding-right: 2px;
     opacity: 0;
     cursor: move;
