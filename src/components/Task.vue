@@ -8,6 +8,7 @@
       :draggable="draggable"
     >
       <div class="task" :class="!details.done && details.description !== '' ? 'active' : '' ">
+        <img class="drag-indicator" src="drag_indicator.svg" draggable="false">
         <textarea
           v-model.lazy="details.description" 
           placeholder="Describe your new task." 
@@ -39,6 +40,15 @@
 
   &.active {
     border-color: #006fc0;
+  }
+
+  .drag-indicator {
+    padding-right: 2px;
+    opacity: 0;
+    cursor: move;
+  }
+  &:hover .drag-indicator {
+    opacity: 0.7;
   }
 
   .description {
