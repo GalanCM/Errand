@@ -6,7 +6,7 @@
         <template v-for="offset in [0,1,2]">
           <h2 class="day-header" :key="'day' + offset">{{getDayNameFromOffset(offset)}}</h2>
           <Task v-for="task in getTasksByDateOffset(offset)" :details="task" :key="task.id" @start-sorting="startSorting" @stop-sorting="stopSorting"></Task>
-          <drop v-if="getTasksByDateOffset(offset).length === 0"
+          <drop v-if="getTasksByDateOffset(offset).length === 0 && ( newTask === null || newTask.date.getTime() !== getDateWithOffset( offset ).getTime() )"
             class="drop"
             :key="'drop' + offset"
             @dragenter="handleDropEnter(offset, ...arguments)"
