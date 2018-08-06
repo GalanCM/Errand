@@ -4,10 +4,16 @@
       <template v-for="offset in [0,1,2]">
         <h2 class="day-header" :key="'day' + offset">{{getDayNameFromOffset(offset)}}</h2>
         <Task v-for="task in getTasksByDateOffset(offset)" :details="task" :key="task.id" @start-sorting="startSorting" @stop-sorting="stopSorting"></Task>
+        <drop v-if="getTasksByDateOffset(offset).length === 0"
+          class="drop"
+          :key="'drop' + offset"
+          @dragenter="handleDropEnter(offset, ...arguments)"
+        ></drop>
         <button class="new-button"
           @click="createNewTaskWithDateOffset(offset)"
           v-if="newTask === null || newTask.date.getTime() !== getDateWithOffset(offset).getTime()"
-          :key="'button' + offset">
+          :key="'button' + offset"
+        >
           + New Task
         </button>
         <Task v-else class="new-task" :details="newTask" @description-blurred="closeNewTask" :key="'newTaskDay' + offset"></Task>
@@ -58,6 +64,13 @@
 // TRANSITIONS
 .slide-reorder-move {
   transition: 300ms transform ease-in-out;
+}
+
+.drop {
+  height: 36px;
+  width: calc(100% - 10px);
+  margin: 2px 10px 2px 0;
+  // background-color: #e5e5e5;
 }
 </style>
 
@@ -132,6 +145,11 @@ export default class Organizer extends Vue {
   }
   private stopSorting() {
     this.isSorting = false;
+  }
+
+  private handleDropEnter(offset: number, transferData: { details: TaskData }, event: DragEvent) {
+    transferData.details.date = this.getDateWithOffset(offset);
+    transferData.details.order = 0.5;
   }
 }
 </script>

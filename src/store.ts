@@ -26,13 +26,6 @@ const state: RootState = {
       date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1),
       order: 2,
       done: false
-    },
-    {
-      id: 3,
-      description: "Final Task",
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 2),
-      order: 2,
-      done: false
     }
   ]
 };
