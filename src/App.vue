@@ -5,7 +5,7 @@
 </template>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Zilla+Slab:500|Work+Sans:500");
+@import url("https://fonts.googleapis.com/css?family=Zilla+Slab:500|Work+Sans:400,400i,500,700,700i");
 </style>
 
 
