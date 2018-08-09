@@ -19,13 +19,6 @@ const state: RootState = {
       date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
       order: 2,
       done: true
-    },
-    {
-      id: 2,
-      description: "Tommorow Task",
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1),
-      order: 2,
-      done: false
     }
   ]
 };

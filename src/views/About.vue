@@ -7,7 +7,7 @@
       </header>
       <main>
         <p>
-          Sadly, most of the web apps that I've written in the past are either locked away behind corporate ethernets, or defunct.
+          Unfortunately, most of the web apps that I've written in the past are either locked away behind corporate ethernets, or defunct.
           To make up for this hole in my portfolio, and to prove my ability to write web applications to potential clients and employers, I built this simple organizer. 
           If you're interested in the code, <a href="https://github.com/GalanCM/FuzzyPlanner">it is available on Github</a>.
         </p>
