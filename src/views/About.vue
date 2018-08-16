@@ -25,7 +25,6 @@
           There is still work left for me to do, but the sooner I can show this to clients and employers, the better. The following tasks should be completed over the next couple weeks:
         </p>
         <ul>
-          <li><strong>Local Saving.</strong> I've not yet implemented any form of saving. If you reload the page, you will lose all of your work. This is a priority.</li>
           <li><strong>User Testing.</strong> I have done very little user testing, and what little I have done has already suggested that I need to make some changes.</li>
           <li><strong>Better Keyboard Navigation.</strong> Currently, you can't really use the app without a mouse.</li>
           <li><strong>Accessibility & Compatibility Pass.</strong> I want to make sure this is usable for as many people as possible.</li>
