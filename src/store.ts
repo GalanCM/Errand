@@ -11,7 +11,7 @@ if (savedTasks !== null) {
   state = { tasks: JSON.parse(savedTasks) };
 
   // restore dates as Date()s
-  for (let task of state.tasks) {
+  for (const task of state.tasks) {
     task.date = new Date(task.date);
   }
 } else {
@@ -80,8 +80,8 @@ const mutations = {
 // Plugin for backing up tasks locally.
 // Not the best optimized approach, but the most straightforward.
 // Will come back and optimize later if performance is a problem.
-const localPeristancePlugin = (store: Store<RootState>) => {
-  store.subscribe((mutation: { type: string; payload: any }, localState: RootState) => {
+const localPeristancePlugin = (localStore: Store<RootState>) => {
+  localStore.subscribe((mutation: { type: string; payload: any }, localState: RootState) => {
     localStorage.setItem("tasks", JSON.stringify(state.tasks));
   });
 };
