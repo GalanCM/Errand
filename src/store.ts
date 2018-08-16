@@ -14,6 +14,24 @@ if (savedTasks !== null) {
   for (const task of state.tasks) {
     task.date = new Date(task.date);
   }
+
+  // roll over old tasks to today
+  const todaysDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+  state.tasks
+    .filter((task) => task.date <= todaysDate)
+    .sort((a, b) => {
+      if (a.date < b.date || (a.date === b.date && a.order < b.order)) {
+        return -1;
+      } else if (a.date > b.date || (a.date === b.date && a.order > b.order)) {
+        return 1;
+      } else {
+        return 0;
+      }
+    })
+    .forEach((task: TaskData, index: number) => {
+      task.date = todaysDate;
+      task.order = index;
+    });
 } else {
   state = {
     tasks: [
