@@ -114,7 +114,6 @@ import Component from "vue-class-component";
 @Component
 export default class About extends Vue {
   private close() {
-    console.log("cl");
     this.$router.push("/");
   }
 }

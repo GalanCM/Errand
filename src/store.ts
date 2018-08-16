@@ -1,27 +1,39 @@
 import Vue from "vue";
-import Vuex from "vuex";
+import Vuex, { Store } from "vuex";
 import { RootState, TaskData } from "@/types";
 
 Vue.use(Vuex);
 
-const state: RootState = {
-  tasks: [
-    {
-      id: 0,
-      description: "Active Task",
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-      order: 1,
-      done: false
-    },
-    {
-      id: 1,
-      description: "Completed Task",
-      date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
-      order: 2,
-      done: true
-    }
-  ]
-};
+// restore state from localStorage or create new state if localStorage is empty
+let state!: RootState;
+const savedTasks = localStorage.getItem("tasks");
+if (savedTasks !== null) {
+  state = { tasks: JSON.parse(savedTasks) };
+
+  // restore dates as Date()s
+  for (let task of state.tasks) {
+    task.date = new Date(task.date);
+  }
+} else {
+  state = {
+    tasks: [
+      {
+        id: 0,
+        description: "Active Task",
+        date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        order: 1,
+        done: false
+      },
+      {
+        id: 1,
+        description: "Completed Task",
+        date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        order: 2,
+        done: true
+      }
+    ]
+  };
+}
 
 const getters = {};
 
@@ -65,11 +77,21 @@ const mutations = {
   }
 };
 
+// Plugin for backing up tasks locally.
+// Not the best optimized approach, but the most straightforward.
+// Will come back and optimize later if performance is a problem.
+const localPeristancePlugin = (store: Store<RootState>) => {
+  store.subscribe((mutation: { type: string; payload: any }, localState: RootState) => {
+    localStorage.setItem("tasks", JSON.stringify(state.tasks));
+  });
+};
+
 const store = {
   state,
   getters,
   mutations,
-  actions: {}
+  actions: {},
+  plugins: [localPeristancePlugin]
 };
 
 export default new Vuex.Store(store);
