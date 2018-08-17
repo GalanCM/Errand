@@ -15,8 +15,12 @@ if (savedTasks !== null) {
     task.date = new Date(task.date);
   }
 
-  // roll over old tasks to today
   const todaysDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+
+  // delete old completed tasks
+  state.tasks = state.tasks.filter((task) => task.date >= todaysDate || task.done === false);
+
+  // roll over old incomplete tasks to today
   state.tasks
     .filter((task) => task.date <= todaysDate)
     .sort((a, b) => {
