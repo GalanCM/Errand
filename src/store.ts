@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex, { Store } from "vuex";
 import { RootState, TaskData } from "@/types";
+import { getDate } from "@/date-helper";
 
 Vue.use(Vuex);
 
@@ -15,7 +16,7 @@ if (savedTasks !== null) {
     task.date = new Date(task.date);
   }
 
-  const todaysDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+  const todaysDate = getDate();
 
   // delete old completed tasks
   state.tasks = state.tasks.filter((task) => task.date >= todaysDate || task.done === false);
@@ -42,14 +43,14 @@ if (savedTasks !== null) {
       {
         id: 0,
         description: "Active Task",
-        date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        date: getDate(),
         order: 1,
         done: false
       },
       {
         id: 1,
         description: "Completed Task",
-        date: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()),
+        date: getDate(),
         order: 2,
         done: true
       }

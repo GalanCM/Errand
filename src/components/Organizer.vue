@@ -88,6 +88,7 @@ import { TaskData } from "@/types";
 
 import Task from "@/components/Task.vue";
 import Trash from "@/components/Trash.vue";
+import { getDate } from "@/date-helper";
 import { setTimeout } from "timers";
 
 @Component({ components: { Task, Trash } })
@@ -98,7 +99,7 @@ export default class Organizer extends Vue {
   private isSorting = false;
 
   private getDateWithOffset(offset: number) {
-    return new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + offset);
+    return getDate(offset);
   }
 
   private getDayNameFromOffset(offset: number) {
