@@ -11,7 +11,7 @@
         <img class="drag-indicator" src="drag_indicator.svg" draggable="false">
         <textarea
           v-model.lazy="details.description" 
-          placeholder="Describe your new task." 
+          placeholder="empty task" 
           class="description"
           :disabled="details.done" 
           ref="description"
@@ -19,6 +19,8 @@
           @input="onDescriptionInput"
           @blur="onDescriptionBlurred"
           @focus="draggable = false"
+          @keydown.enter.exact.prevent="onKeyEnter"
+          @keydown.esc="onKeyEsc"
         ></textarea>
         <input type="checkbox" class="checkbox" v-model="details.done" v-show="details.description !== ''">
       </div>
@@ -119,6 +121,19 @@ export default class Task extends Vue {
   private onDescriptionBlurred(newDescription: string, oldDescription: string) {
     this.$emit("description-blurred");
     this.draggable = true;
+  }
+
+  private onKeyEnter(event: Event) {
+    event.preventDefault();
+    (this.$refs.description as HTMLElement).blur();
+
+    if (this.details.id === undefined) {
+      this.$emit("create-new");
+    }
+  }
+
+  private onKeyEsc() {
+    (this.$refs.description as HTMLElement).blur();
   }
 
   private handleDragStart(transferData: any, event: DragEvent) {

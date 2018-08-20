@@ -19,7 +19,7 @@
           >
             + New Task
           </button>
-          <Task v-else class="new-task" :details="newTask" @description-blurred="closeNewTask" :key="'newTaskDay' + offset"></Task>
+          <Task v-else class="new-task" :details="newTask" @description-blurred="closeNewTask" @create-new="$nextTick( () => $nextTick( () => createNewTaskWithDateOffset(offset) ) )" :key="'newTaskDay' + offset"></Task>
         </template>
       </transition-group>
     </section>
