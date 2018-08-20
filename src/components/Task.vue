@@ -22,7 +22,7 @@
           @keydown.enter.exact.prevent="onKeyEnter"
           @keydown.esc="onKeyEsc"
         ></textarea>
-        <input type="checkbox" class="checkbox" v-model="details.done" v-show="details.description !== ''">
+        <input type="checkbox" class="checkbox" v-model="details.done" @keydown.enter.exact="details.done = !details.done" v-show="details.description !== ''">
       </div>
     </drag>
   </drop>
