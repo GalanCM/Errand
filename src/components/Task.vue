@@ -10,8 +10,8 @@
       <div 
         class="task" 
         :class="!details.done && details.description !== '' ? 'active' : '' " 
-        @mouseover="isHovered = true"
-        @mouseout="isHovered = false"
+        @mouseenter="isHovered = true"
+        @mouseleave="isHovered = false"
         @keydown.shift.delete.prevent="onShiftDelete"
         @keydown.shift.up.prevent="onShiftArrowUp"
         @keydown.shift.down.prevent="onShiftArrowDown"
