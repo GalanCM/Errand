@@ -12,6 +12,9 @@
         :class="!details.done && details.description !== '' ? 'active' : '' " 
         @mouseover="isHovered = true"
         @mouseout="isHovered = false"
+        @keydown.shift.delete.prevent="onShiftDelete"
+        @keydown.shift.up.prevent="onShiftArrowUp"
+        @keydown.shift.down.prevent="onShiftArrowDown"
       >
         <img class="drag-indicator" src="drag_indicator.svg" draggable="false">
         <textarea
@@ -179,6 +182,25 @@ export default class Task extends Vue {
   private handleDragEnd(transferData: any, event: DragEvent) {
     this.$store.commit("normalizeOrder");
     this.$emit("stop-sorting");
+  }
+  private onShiftDelete() {
+    this.$store.commit("removeTask", this.details);
+  }
+  private onShiftArrowUp() {
+    this.details.order -= 1.5;
+    this.$store.commit("normalizeOrder");
+    this.isHovered = false;
+    this.$nextTick(() => {
+      (this.$refs.description as HTMLElement).focus();
+    });
+  }
+  private onShiftArrowDown() {
+    this.details.order += 1.5;
+    this.$store.commit("normalizeOrder");
+    this.isHovered = false;
+    this.$nextTick(() => {
+      (this.$refs.description as HTMLElement).focus();
+    });
   }
 }
 </script>

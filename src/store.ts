@@ -19,11 +19,13 @@ if (savedTasks !== null) {
   const todaysDate = getDate();
 
   // delete old completed tasks
-  state.tasks = state.tasks.filter((task) => task.date >= todaysDate || task.done === false);
+  state.tasks = state.tasks.filter(
+    task => task.date >= todaysDate || task.done === false
+  );
 
   // roll over old incomplete tasks to today
   state.tasks
-    .filter((task) => task.date <= todaysDate)
+    .filter(task => task.date <= todaysDate)
     .sort((a, b) => {
       if (a.date < b.date || (a.date === b.date && a.order < b.order)) {
         return -1;
@@ -66,7 +68,9 @@ const mutations = {
       updatedTask.id = window.performance.now() + Math.random();
       localState.tasks.push(updatedTask);
     } else {
-      let storedTask = localState.tasks.find((task) => task.id === updatedTask.id);
+      let storedTask = localState.tasks.find(
+        task => task.id === updatedTask.id
+      );
       storedTask = { ...storedTask, ...updatedTask };
     }
   },
@@ -74,20 +78,22 @@ const mutations = {
     localState.tasks.splice(localState.tasks.indexOf(task), 1);
   },
   normalizeOrder(localState: RootState) {
-    const reorderedTasks = localState.tasks.map((task) => [task.id, task.order]);
-    reorderedTasks.sort((a: Array<number | undefined>, b: Array<number | undefined>) => {
-      if (a === undefined || b === undefined) {
-        return 0;
-        // @ts-ignore: a & b cannot be undefined at this point
-      } else if (a[1] < b[1]) {
-        return -1;
-        // @ts-ignore: a & b cannot be undefined at this point
-      } else if (a[1] > b[1]) {
-        return 1;
-      } else {
-        return 0;
+    const reorderedTasks = localState.tasks.map(task => [task.id, task.order]);
+    reorderedTasks.sort(
+      (a: Array<number | undefined>, b: Array<number | undefined>) => {
+        if (a === undefined || b === undefined) {
+          return 0;
+          // @ts-ignore: a & b cannot be undefined at this point
+        } else if (a[1] < b[1]) {
+          return -1;
+          // @ts-ignore: a & b cannot be undefined at this point
+        } else if (a[1] > b[1]) {
+          return 1;
+        } else {
+          return 0;
+        }
       }
-    });
+    );
 
     for (const i of reorderedTasks.keys()) {
       const sortedTaskId = reorderedTasks[i][0];
@@ -104,9 +110,11 @@ const mutations = {
 // Not the best optimized approach, but the most straightforward.
 // Will come back and optimize later if performance is a problem.
 const localPeristancePlugin = (localStore: Store<RootState>) => {
-  localStore.subscribe((mutation: { type: string; payload: any }, localState: RootState) => {
-    localStorage.setItem("tasks", JSON.stringify(state.tasks));
-  });
+  localStore.subscribe(
+    (mutation: { type: string; payload: any }, localState: RootState) => {
+      localStorage.setItem("tasks", JSON.stringify(state.tasks));
+    }
+  );
 };
 
 const store = {

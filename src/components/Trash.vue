@@ -49,11 +49,10 @@ img {
 
 // TRANSITIONS
 .pop-out-enter-active {
-  transition: 200ms clip-path ease-out 300ms;
+  transition: 200ms clip-path ease-out 200ms;
 }
 .pop-out-enter,
 .pop-out-leave-to {
-  transform: translate(-35px);
   clip-path: polygon(0 0, 10px 0, 10px 100%, 0 100%);
 }
 </style>
