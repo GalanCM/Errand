@@ -1,53 +1,60 @@
 <template>
-  <transition name="corner-slide">
-    <drop class="trash"
-      @dragover="handleDragOver"
-      @dragleave="handleDragLeave"
-      @drop="handleDrop"
-    >
-      <span class="label" :class="{ dragOver: isDragOver }">Remove</span>
-      <img class="icon" src="/trash.svg">
-    </drop>
+  <transition name="pop-out">
+    <article class="trash-wrapper">
+        <button class="trash" @click.prevent="trashTask">
+          <img class="icon" src="/trash.svg">
+        </button>
+    </article>
   </transition>
 </template>
 
 <style lang="less" scoped>
-.trash {
-  display: flex;
-  align-content: center;
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 50px;
-  border-bottom-left-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.8);
-}
+.trash-wrapper {
+  position: relative;
+  right: -10px;
+  transform: translateX(100%);
+  border-radius: 0 6px 6px 0;
+  width: 0; //remove from document flow
+  overflow: visible; // "
+  clip-path: polygon(0 0, 45px 0, 45px 100%, 0 100%);
 
-.label {
-  margin: auto 0 auto 10px;
-  font-size: 18px;
-  color: white;
-
-  &.dragOver {
-    color: red;
+  &::before {
+    // restore background
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    content: "";
+    background-color: #222;
   }
 }
 
-.icon {
-  width: 40px;
-  margin: auto 5px;
-  padding-bottom: 2px;
-  padding-left: 3px;
+.trash {
+  display: flex;
+  padding: 0;
+  margin-left: 10px;
+  border: none;
+  border-radius: inherit;
+  background-color: black;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #a00;
+  }
+}
+
+img {
+  height: 19px;
+  padding: 7px 7px;
 }
 
 // TRANSITIONS
-.corner-slide-enter-active,
-.corner-slide-leave-active {
-  transition: 500ms transform ease-out, 300ms opacity ease-out;
+.pop-out-enter-active {
+  transition: 200ms clip-path ease-out 300ms;
 }
-.corner-slide-enter, .corner-slide-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  transform: translate(100%, -100%);
-  opacity: 0;
+.pop-out-enter,
+.pop-out-leave-to {
+  transform: translate(-35px);
+  clip-path: polygon(0 0, 10px 0, 10px 100%, 0 100%);
 }
 </style>
 
@@ -57,20 +64,10 @@ import Component from "vue-class-component";
 
 import { TaskData } from "@/types";
 
-@Component
+@Component({ props: ["task"] })
 export default class Trash extends Vue {
-  private isDragOver = false;
-
-  private handleDragOver(transferData: { details: TaskData }, event: DragEvent) {
-    this.isDragOver = true;
-  }
-  private handleDragLeave(transferData: { details: TaskData }, event: DragEvent) {
-    this.isDragOver = false;
-  }
-  private handleDrop(transferData: { details: TaskData }, event: DragEvent) {
-    this.isDragOver = false;
-    this.$store.commit("removeTask", transferData.details);
-    this.$emit("task-deleted");
+  private trashTask() {
+    this.$store.commit("removeTask", this.$props.task);
   }
 }
 </script>

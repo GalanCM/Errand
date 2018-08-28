@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Trash v-show="isSorting" @task-deleted="isSorting = false"></Trash>
     <section class="organizer">
       <transition-group :name="isSorting ? 'slide-reorder' : ''" tag="div">
         <template v-for="offset in [0,1,2]">
@@ -87,11 +86,10 @@ import { State } from "vuex-class";
 import { TaskData } from "@/types";
 
 import Task from "@/components/Task.vue";
-import Trash from "@/components/Trash.vue";
 import { getDate } from "@/date-helper";
 import { setTimeout } from "timers";
 
-@Component({ components: { Task, Trash } })
+@Component({ components: { Task } })
 export default class Organizer extends Vue {
   @State("tasks") private tasks!: TaskData[];
   private newTask: TaskData | null = null;
@@ -108,7 +106,15 @@ export default class Organizer extends Vue {
     } else if (offset === 1) {
       return "Tomorrow";
     } else {
-      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ];
       return days[this.getDateWithOffset(offset).getDay()];
     }
   }
@@ -116,15 +122,19 @@ export default class Organizer extends Vue {
   private getTasksByDateOffset(offset: number) {
     const date = this.getDateWithOffset(offset);
 
-    return this.tasks.filter((task: TaskData) => task.date.toDateString() === date.toDateString()).sort((a, b) => {
-      if (a.order > b.order) {
-        return 1;
-      } else if (a.order < b.order) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
+    return this.tasks
+      .filter(
+        (task: TaskData) => task.date.toDateString() === date.toDateString()
+      )
+      .sort((a, b) => {
+        if (a.order > b.order) {
+          return 1;
+        } else if (a.order < b.order) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
   }
 
   private createNewTaskWithDateOffset(offset: number) {
@@ -134,7 +144,8 @@ export default class Organizer extends Vue {
       id: undefined,
       description: "",
       date: this.getDateWithOffset(offset),
-      order: daysTasks.length > 0 ? daysTasks[daysTasks.length - 1].order + 1 : 0,
+      order:
+        daysTasks.length > 0 ? daysTasks[daysTasks.length - 1].order + 1 : 0,
       done: false
     };
   }
@@ -152,7 +163,11 @@ export default class Organizer extends Vue {
     this.isSorting = false;
   }
 
-  private handleDropEnter(offset: number, transferData: { details: TaskData }, event: DragEvent) {
+  private handleDropEnter(
+    offset: number,
+    transferData: { details: TaskData },
+    event: DragEvent
+  ) {
     transferData.details.date = this.getDateWithOffset(offset);
     transferData.details.order = 0.5;
   }

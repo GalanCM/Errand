@@ -7,7 +7,12 @@
       :style="{opacity: this.details.order % 1 !== 0 ? 0.2 : 1}"
       :draggable="draggable"
     >
-      <div class="task" :class="!details.done && details.description !== '' ? 'active' : '' ">
+      <div 
+        class="task" 
+        :class="!details.done && details.description !== '' ? 'active' : '' " 
+        @mouseover="isHovered = true"
+        @mouseout="isHovered = false"
+      >
         <img class="drag-indicator" src="drag_indicator.svg" draggable="false">
         <textarea
           v-model.lazy="details.description" 
@@ -23,6 +28,7 @@
           @keydown.esc="onKeyEsc"
         ></textarea>
         <input type="checkbox" class="checkbox" v-model="details.done" @keydown.enter.exact="details.done = !details.done" v-show="details.description !== ''">
+        <Trash v-show="isHovered" :task="details"></Trash>
       </div>
     </drag>
   </drop>
@@ -89,12 +95,13 @@ import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
 
 import { TaskData } from "@/types";
-import { performance } from "perf_hooks";
-import { setInterval } from "timers";
+import Trash from "@/components/Trash.vue";
 
-@Component
+@Component({ components: { Trash } })
 export default class Task extends Vue {
   @Prop() private details!: TaskData;
+
+  private isHovered = false;
 
   private blockReordering = false; // prevent @dragEnter from firing during reordering
   private draggable = true;
@@ -115,7 +122,8 @@ export default class Task extends Vue {
   private onDescriptionInput() {
     const descriptionElement = this.$refs.description as HTMLElement;
     descriptionElement.style.height = "auto"; // behavioral fix
-    descriptionElement.style.height = descriptionElement.scrollHeight - 10 + "px";
+    descriptionElement.style.height =
+      descriptionElement.scrollHeight - 10 + "px";
   }
 
   private onDescriptionBlurred(newDescription: string, oldDescription: string) {
@@ -140,8 +148,14 @@ export default class Task extends Vue {
     (this.$refs.description as HTMLElement).blur();
     this.$emit("start-sorting");
   }
-  private handleDragEnter(transferData: { details: TaskData }, event: DragEvent) {
-    if (this.details.id === transferData.details.id || this.blockReordering === true) {
+  private handleDragEnter(
+    transferData: { details: TaskData },
+    event: DragEvent
+  ) {
+    if (
+      this.details.id === transferData.details.id ||
+      this.blockReordering === true
+    ) {
       return;
     }
 
