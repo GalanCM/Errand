@@ -7,101 +7,114 @@ Vue.use(Vuex);
 
 // restore state from localStorage or create new state if localStorage is empty
 let state!: RootState;
-const savedTasks = localStorage.getItem("tasks");
-if (savedTasks !== null) {
-  state = { tasks: JSON.parse(savedTasks) };
 
-  // restore dates as Date()s
-  for (const task of state.tasks) {
-    task.date = new Date(task.date);
-  }
+// const savedTasks = localStorage.getItem("tasks");
+// if (savedTasks !== null) {
+//   state = { tasks: JSON.parse(savedTasks) };
 
-  const todaysDate = getDate();
+//   // restore dates as Date()s
+//   for (const task of state.tasks) {
+//     task.date = new Date(task.date);
+//   }
 
-  // delete old completed tasks
-  state.tasks = state.tasks.filter(
-    task => task.date >= todaysDate || task.done === false
-  );
+//   const todaysDate = getDate();
 
-  // roll over old incomplete tasks to today
-  state.tasks
-    .filter(task => task.date <= todaysDate)
-    .sort((a, b) => {
-      if (a.date < b.date || (a.date === b.date && a.order < b.order)) {
+//   // delete old completed tasks
+//   state.tasks = state.tasks.filter(
+//     task => task.date >= todaysDate || task.done === false
+//   );
+
+//   // roll over old incomplete tasks to today
+//   state.tasks
+//     .filter(task => task.date <= todaysDate)
+//     .sort((a, b) => {
+//       if (a.date < b.date || (a.date === b.date && a.order < b.order)) {
+//         return -1;
+//       } else if (a.date > b.date || (a.date === b.date && a.order > b.order)) {
+//         return 1;
+//       } else {
+//         return 0;
+//       }
+//     })
+//     .forEach((task: TaskData, index: number) => {
+//       task.date = todaysDate;
+//       task.order = index;
+//     });
+// } else {
+state = {
+  tasks: [
+    {
+      id: 0,
+      description: "Active Task",
+      date: getDate(),
+      order: 1,
+      done: false
+    },
+    {
+      id: 1,
+      description: "Completed Task",
+      date: getDate(),
+      order: 2,
+      done: true
+    }
+  ]
+};
+// }
+
+const getters = {};
+
+export const mutations = {
+  updateTask(localState: RootState, updatedTask: TaskData) {
+    let storedTask = localState.tasks.find(
+      (task) => task.id === updatedTask.id
+    );
+
+    if (updatedTask.id === undefined) {
+      updatedTask.id = window.performance.now() + Math.random();
+      localState.tasks.push(updatedTask);
+    } else if (storedTask !== undefined) {
+      storedTask = { ...storedTask, ...updatedTask };
+    } else {
+      throw new Error("Task id not found");
+    }
+  },
+  removeTask(localState: RootState, taskToRemove: TaskData) {
+    const taskIndex = localState.tasks.indexOf(taskToRemove);
+    if (taskIndex !== -1) {
+      localState.tasks.splice(taskIndex, 1);
+    } else {
+      throw new Error("Can't delete task: not found");
+    }
+  },
+  normalizeOrder(localState: RootState) {
+    interface MiniTask {
+      id: number | undefined;
+      order: number;
+    }
+    const reorderedTasks: MiniTask[] = localState.tasks.map((task) => {
+      return {
+        id: task.id,
+        order: task.order
+      };
+    });
+    reorderedTasks.sort((a: MiniTask, b: MiniTask) => {
+      if (a.order < b.order) {
         return -1;
-      } else if (a.date > b.date || (a.date === b.date && a.order > b.order)) {
+      } else if (a.order > b.order) {
         return 1;
       } else {
         return 0;
       }
-    })
-    .forEach((task: TaskData, index: number) => {
-      task.date = todaysDate;
-      task.order = index;
     });
-} else {
-  state = {
-    tasks: [
-      {
-        id: 0,
-        description: "Active Task",
-        date: getDate(),
-        order: 1,
-        done: false
-      },
-      {
-        id: 1,
-        description: "Completed Task",
-        date: getDate(),
-        order: 2,
-        done: true
-      }
-    ]
-  };
-}
+    // console.log(reorderedTasks);
 
-const getters = {};
-
-const mutations = {
-  updateTask(localState: RootState, updatedTask: TaskData) {
-    if (updatedTask.id === undefined) {
-      updatedTask.id = window.performance.now() + Math.random();
-      localState.tasks.push(updatedTask);
-    } else {
-      let storedTask = localState.tasks.find(
-        task => task.id === updatedTask.id
-      );
-      storedTask = { ...storedTask, ...updatedTask };
-    }
-  },
-  removeTask(localState: RootState, task: TaskData) {
-    localState.tasks.splice(localState.tasks.indexOf(task), 1);
-  },
-  normalizeOrder(localState: RootState) {
-    const reorderedTasks = localState.tasks.map(task => [task.id, task.order]);
-    reorderedTasks.sort(
-      (a: Array<number | undefined>, b: Array<number | undefined>) => {
-        if (a === undefined || b === undefined) {
-          return 0;
-          // @ts-ignore: a & b cannot be undefined at this point
-        } else if (a[1] < b[1]) {
-          return -1;
-          // @ts-ignore: a & b cannot be undefined at this point
-        } else if (a[1] > b[1]) {
-          return 1;
-        } else {
-          return 0;
-        }
+    for (const index of reorderedTasks.keys()) {
+      const miniTask = reorderedTasks[index];
+      const trueTask = localState.tasks.find((task) => task.id === miniTask.id);
+      if (trueTask === undefined) {
+        throw new Error("Sorted task does not exist");
       }
-    );
-
-    for (const i of reorderedTasks.keys()) {
-      const sortedTaskId = reorderedTasks[i][0];
-      for (const stateTask of localState.tasks) {
-        if (sortedTaskId === stateTask.id) {
-          stateTask.order = i;
-        }
-      }
+      trueTask.order = index;
     }
   }
 };
@@ -123,6 +136,7 @@ const store = {
   mutations,
   actions: {},
   plugins: [localPeristancePlugin]
+  // strict: process.env.NODE_ENV !== "production"
 };
 
 export default new Vuex.Store(store);
