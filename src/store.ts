@@ -6,42 +6,7 @@ import { getDate } from "@/date-helper";
 Vue.use(Vuex);
 
 // restore state from localStorage or create new state if localStorage is empty
-let state!: RootState;
-
-// const savedTasks = localStorage.getItem("tasks");
-// if (savedTasks !== null) {
-//   state = { tasks: JSON.parse(savedTasks) };
-
-//   // restore dates as Date()s
-//   for (const task of state.tasks) {
-//     task.date = new Date(task.date);
-//   }
-
-//   const todaysDate = getDate();
-
-//   // delete old completed tasks
-//   state.tasks = state.tasks.filter(
-//     task => task.date >= todaysDate || task.done === false
-//   );
-
-//   // roll over old incomplete tasks to today
-//   state.tasks
-//     .filter(task => task.date <= todaysDate)
-//     .sort((a, b) => {
-//       if (a.date < b.date || (a.date === b.date && a.order < b.order)) {
-//         return -1;
-//       } else if (a.date > b.date || (a.date === b.date && a.order > b.order)) {
-//         return 1;
-//       } else {
-//         return 0;
-//       }
-//     })
-//     .forEach((task: TaskData, index: number) => {
-//       task.date = todaysDate;
-//       task.order = index;
-//     });
-// } else {
-state = {
+const state: RootState = {
   tasks: [
     {
       id: 0,
@@ -59,7 +24,6 @@ state = {
     }
   ]
 };
-// }
 
 const getters = {};
 
@@ -156,6 +120,10 @@ export const mutations = {
       task.date = getDate(0);
       task.order = index;
     }
+  },
+
+  replaceTasks(localStore: RootState, newTasks: TaskData[]) {
+    localStore.tasks = newTasks;
   }
 };
 
@@ -163,6 +131,21 @@ export const mutations = {
 // Not the best optimized approach, but the most straightforward.
 // Will come back and optimize later if performance is a problem.
 const localPeristancePlugin = (localStore: Store<RootState>) => {
+  // restore state if available.
+  const savedTasks = localStorage.getItem("tasks");
+  if (savedTasks !== null) {
+    const state = { tasks: JSON.parse(savedTasks) };
+
+    // restore dates as Date()s
+    for (const task of state.tasks) {
+      task.date = new Date(task.date);
+    }
+
+    localStore.commit("replaceTasks", state.tasks);
+    localStore.commit("cleanupOldTasks");
+  }
+
+  // watch for mutations and save state
   localStore.subscribe(
     (mutation: { type: string; payload: any }, localState: RootState) => {
       localStorage.setItem("tasks", JSON.stringify(state.tasks));
