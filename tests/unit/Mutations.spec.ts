@@ -32,8 +32,7 @@ describe("mutations", function() {
     it("with non-existant id should throw error.", function() {
       const state: RootState = { tasks: [] };
 
-      const newTask = sampleTask;
-      newTask.id = 1;
+      const newTask = { ...sampleTask, id: -1 };
 
       const invalidUpdate = () => {
         mutations.updateTask(state, newTask);
@@ -46,8 +45,7 @@ describe("mutations", function() {
     it("with existing id should update existing task", function() {
       const state: RootState = { tasks: [sampleTask] };
 
-      const update = sampleTask;
-      update.done = true;
+      const update = { ...sampleTask, done: true };
 
       mutations.updateTask(state, update);
 
@@ -59,6 +57,7 @@ describe("mutations", function() {
       });
     });
   });
+
   describe("REMOVE_TASK", function() {
     it("should delete task if it exists.", function() {
       const state: RootState = { tasks: [sampleTask] };
@@ -110,6 +109,49 @@ describe("mutations", function() {
         const orderValue = sortedTasks[index].order;
         expect(orderValue % 1).to.equal(0);
         expect(orderValue).to.equal(index);
+      }
+    });
+  });
+
+  describe("CLEANUP_OLD_TASKS", function() {
+    it("should delete completed tasks from previous days", function() {
+      const state = {
+        tasks: [{ ...sampleTask, date: getDate(-1), done: true }]
+      };
+
+      mutations.cleanupOldTasks(state);
+
+      expect(state.tasks).to.have.lengthOf(0);
+    });
+
+    it("should move incomplete tasks from previous days to today", function() {
+      const state = {
+        tasks: [{ ...sampleTask, date: getDate(-1), done: false }]
+      };
+
+      mutations.cleanupOldTasks(state);
+
+      expect(state.tasks).to.have.lengthOf(1);
+      expect(state.tasks[0].date.getTime()).to.equal(getDate(0).getTime());
+    });
+
+    it("should maintain sort order when moving incomplete tasks", function() {
+      const state = {
+        tasks: [
+          { ...sampleTask, date: getDate(-2), order: 1, done: false },
+          { ...sampleTask, date: getDate(-1), order: 1, done: false },
+          { ...sampleTask, date: getDate(-1), order: 2, done: false },
+          { ...sampleTask, date: getDate(0), order: 1, done: false }
+        ]
+      };
+
+      mutations.cleanupOldTasks(state);
+
+      for (const index of state.tasks.keys()) {
+        const task = state.tasks[index];
+
+        expect(task.date.getTime()).to.equal(getDate(0).getTime());
+        expect(task.order).to.equal(index);
       }
     });
   });

@@ -65,19 +65,23 @@ const getters = {};
 
 export const mutations = {
   updateTask(localState: RootState, updatedTask: TaskData) {
-    let storedTask = localState.tasks.find(
+    const taskIndex = localState.tasks.findIndex(
       (task) => task.id === updatedTask.id
     );
 
     if (updatedTask.id === undefined) {
       updatedTask.id = window.performance.now() + Math.random();
       localState.tasks.push(updatedTask);
-    } else if (storedTask !== undefined) {
-      storedTask = { ...storedTask, ...updatedTask };
+    } else if (taskIndex !== -1) {
+      localState.tasks[taskIndex] = {
+        ...localState.tasks[taskIndex],
+        ...updatedTask
+      };
     } else {
       throw new Error("Task id not found");
     }
   },
+
   removeTask(localState: RootState, taskToRemove: TaskData) {
     const taskIndex = localState.tasks.indexOf(taskToRemove);
     if (taskIndex !== -1) {
@@ -86,6 +90,7 @@ export const mutations = {
       throw new Error("Can't delete task: not found");
     }
   },
+
   normalizeOrder(localState: RootState) {
     interface MiniTask {
       id: number | undefined;
@@ -106,7 +111,6 @@ export const mutations = {
         return 0;
       }
     });
-    // console.log(reorderedTasks);
 
     for (const index of reorderedTasks.keys()) {
       const miniTask = reorderedTasks[index];
@@ -115,6 +119,42 @@ export const mutations = {
         throw new Error("Sorted task does not exist");
       }
       trueTask.order = index;
+    }
+  },
+
+  cleanupOldTasks(localState: RootState) {
+    const todaysUpdatedTasks: TaskData[] = [];
+
+    for (let index = localState.tasks.length - 1; index >= 0; index--) {
+      const task = localState.tasks[index];
+
+      if (task.date < getDate(0) && task.done === true) {
+        localState.tasks.splice(index);
+      } else if (task.date.getTime() <= getDate(0).getTime()) {
+        todaysUpdatedTasks.push(localState.tasks[index]);
+      }
+    }
+
+    todaysUpdatedTasks.sort((a, b) => {
+      if (a.date < b.date) {
+        return -1;
+      } else if (a.date > b.date) {
+        return 1;
+      } else {
+        if (a.order < b.order) {
+          return -1;
+        } else if (a.order > b.order) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    });
+
+    for (const index of todaysUpdatedTasks.keys()) {
+      const task = todaysUpdatedTasks[index];
+      task.date = getDate(0);
+      task.order = index;
     }
   }
 };
