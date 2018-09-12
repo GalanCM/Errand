@@ -175,8 +175,8 @@ const store = {
   getters,
   mutations,
   actions: {},
-  plugins: [localPeristancePlugin]
-  // strict: process.env.NODE_ENV !== "production"
+  plugins: [localPeristancePlugin],
+  strict: process.env.NODE_ENV !== "production"
 };
 
 export default new Vuex.Store(store);
