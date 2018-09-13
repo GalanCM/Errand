@@ -138,24 +138,29 @@ export const mutations = {
 // Not the best optimized approach, but the most straightforward.
 // Will come back and optimize later if performance is a problem.
 const localPeristancePlugin = (localStore: Store<RootState>) => {
+  // don't use in test
+  if (process.env.NODE_ENV === "test") {
+    return;
+  }
+
   // restore state if available.
   const savedTasks = localStorage.getItem("tasks");
   if (savedTasks !== null) {
-    const state = { tasks: JSON.parse(savedTasks) };
+    const savedState = { tasks: JSON.parse(savedTasks) };
 
     // restore dates as Date()s
-    for (const task of state.tasks) {
+    for (const task of savedState.tasks) {
       task.date = new Date(task.date);
     }
 
-    localStore.commit("replaceTasks", state.tasks);
+    localStore.commit("replaceTasks", savedState.tasks);
     localStore.commit("cleanupOldTasks");
   }
 
   // watch for mutations and save state
   localStore.subscribe(
     (mutation: { type: string; payload: any }, localState: RootState) => {
-      localStorage.setItem("tasks", JSON.stringify(state.tasks));
+      localStorage.setItem("tasks", JSON.stringify(localState.tasks));
     }
   );
 };
