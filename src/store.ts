@@ -37,10 +37,8 @@ export const mutations = {
       updatedTask.id = window.performance.now() + Math.random();
       localState.tasks.push(updatedTask);
     } else if (taskIndex !== -1) {
-      localState.tasks[taskIndex] = {
-        ...localState.tasks[taskIndex],
-        ...updatedTask
-      };
+      let storedTask = localState.tasks[taskIndex];
+      storedTask = { ...storedTask, ...updatedTask };
     } else {
       throw new Error("Task id not found");
     }
