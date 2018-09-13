@@ -12,7 +12,10 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
-      "node"    ],
+      "node",
+      "mocha",
+      "chai"
+    ],
     "paths": {
       "@/*": [
         "src/*"

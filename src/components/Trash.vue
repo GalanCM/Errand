@@ -21,17 +21,17 @@
   &::before {
     // restore background
     position: absolute;
-    width: 10px;
+    width: 7px;
     height: 100%;
     content: "";
-    background-color: #222;
+    background-color: #555;
   }
 }
 
 .trash {
   display: flex;
   padding: 0;
-  margin-left: 10px;
+  margin-left: 7px;
   border: none;
   border-radius: inherit;
   background-color: black;

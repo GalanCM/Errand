@@ -1,5 +1,9 @@
-const today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+const today = new Date();
 
 export function getDate(offset = 0) {
-  return new Date(today.getFullYear(), today.getMonth(), today.getDate() + offset);
+  return new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() + offset
+  );
 }
