@@ -37,8 +37,11 @@ export const mutations = {
       updatedTask.id = window.performance.now() + Math.random();
       localState.tasks.push(updatedTask);
     } else if (taskIndex !== -1) {
-      let storedTask = localState.tasks[taskIndex];
-      storedTask = { ...storedTask, ...updatedTask };
+      // not the prettiest way to modify attributes, but necessary to work both with and without Vuex
+      for (const key of Object.keys(localState.tasks[taskIndex])) {
+        // @ts-ignore: need implict any to loop through keys
+        localState.tasks[taskIndex][key] = updatedTask[key];
+      }
     } else {
       throw new Error("Task id not found");
     }
