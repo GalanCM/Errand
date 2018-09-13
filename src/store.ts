@@ -47,7 +47,14 @@ export const mutations = {
   },
 
   removeTask(localState: RootState, taskToRemove: TaskData) {
-    const taskIndex = localState.tasks.indexOf(taskToRemove);
+    const taskIndex = localState.tasks.findIndex((task) => {
+      if (task.id === taskToRemove.id) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
     if (taskIndex !== -1) {
       localState.tasks.splice(taskIndex, 1);
     } else {
@@ -158,8 +165,8 @@ const store = {
   getters,
   mutations,
   actions: {},
-  plugins: [localPeristancePlugin],
-  strict: process.env.NODE_ENV !== "production"
+  plugins: [localPeristancePlugin]
+  // strict: process.env.NODE_ENV !== "production"
 };
 
 export default new Vuex.Store(store);
