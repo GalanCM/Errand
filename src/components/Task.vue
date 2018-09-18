@@ -4,12 +4,12 @@
       @dragstart="handleDragStart" 
       @dragend="handleDragEnd"
       :transfer-data="{ details }"
-      :style="{opacity: this.details.order % 1 !== 0 ? 0.2 : 1}"
+      :style="{opacity: this.order % 1 !== 0 ? 0.2 : 1}"
       :draggable="draggable"
     >
       <div 
         class="task" 
-        :class="!details.done && details.description !== '' ? 'active' : '' " 
+        :class="!done && description !== '' ? 'active' : '' " 
         @mouseenter="isHovered = true"
         @mouseleave="isHovered = false"
         @keydown.shift.delete.prevent="onShiftDelete"
@@ -21,7 +21,7 @@
           v-model.lazy="description" 
           placeholder="empty task" 
           class="description"
-          :disabled="details.done" 
+          :disabled="done" 
           ref="description"
           rows="1"
           @input="onDescriptionInput"
@@ -30,7 +30,7 @@
           @keydown.enter.exact.prevent="onKeyEnter"
           @keydown.esc="onKeyEsc"
         ></textarea>
-        <input type="checkbox" class="checkbox" v-model="done" @keydown.enter.exact="details.done = !details.done" v-show="details.description !== ''">
+        <input type="checkbox" class="checkbox" v-model="done" @keydown.enter.exact="done = !done" v-show="description !== ''">
         <Trash v-show="isHovered" :task="details"></Trash>
       </div>
     </drag>
@@ -147,13 +147,13 @@ export default class Task extends Vue {
 
   private mounted() {
     this.onDescriptionInput();
-    if (this.details.id === undefined) {
+    if (this.id === undefined) {
       (this.$refs.description as HTMLElement).focus();
     }
   }
 
   private updated() {
-    if (this.details.description !== "") {
+    if (this.description !== "") {
       this.$store.commit("updateTask", this.details);
     }
   }
@@ -174,7 +174,7 @@ export default class Task extends Vue {
     event.preventDefault();
     (this.$refs.description as HTMLElement).blur();
 
-    if (this.details.id === undefined) {
+    if (this.id === undefined) {
       this.$emit("create-new");
     }
   }
@@ -191,10 +191,7 @@ export default class Task extends Vue {
     transferData: { details: TaskData },
     event: DragEvent
   ) {
-    if (
-      this.details.id === transferData.details.id ||
-      this.blockReordering === true
-    ) {
+    if (this.id === transferData.details.id || this.blockReordering === true) {
       return;
     }
 
@@ -231,7 +228,7 @@ export default class Task extends Vue {
     this.$store.commit("removeTask", this.details);
   }
   private onShiftArrowUp() {
-    this.details.order -= 1.5;
+    this.order -= 1.5;
     this.$store.commit("normalizeOrder");
     this.isHovered = false;
     this.$nextTick(() => {
@@ -239,7 +236,7 @@ export default class Task extends Vue {
     });
   }
   private onShiftArrowDown() {
-    this.details.order += 1.5;
+    this.order += 1.5;
     this.$store.commit("normalizeOrder");
     this.isHovered = false;
     this.$nextTick(() => {
