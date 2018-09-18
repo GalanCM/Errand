@@ -30,7 +30,7 @@
           @keydown.enter.exact.prevent="onKeyEnter"
           @keydown.esc="onKeyEsc"
         ></textarea>
-        <input type="checkbox" class="checkbox" v-model="details.done" @keydown.enter.exact="details.done = !details.done" v-show="details.description !== ''">
+        <input type="checkbox" class="checkbox" v-model="done" @keydown.enter.exact="details.done = !details.done" v-show="details.description !== ''">
         <Trash v-show="isHovered" :task="details"></Trash>
       </div>
     </drag>
@@ -108,6 +108,13 @@ export default class Task extends Vue {
 
   private blockReordering = false; // prevent @dragEnter from firing during reordering
   private draggable = true;
+
+  get done() {
+    return this.details.done;
+  }
+  set done(value) {
+    this.$store.commit("updateTask", { ...this.details, done: value });
+  }
 
   private mounted() {
     this.onDescriptionInput();
