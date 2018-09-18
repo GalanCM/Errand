@@ -18,7 +18,7 @@
       >
         <img class="drag-indicator" src="drag_indicator.svg" draggable="false">
         <textarea
-          v-model.lazy="details.description" 
+          v-model.lazy="description" 
           placeholder="empty task" 
           class="description"
           :disabled="details.done" 
@@ -109,6 +109,35 @@ export default class Task extends Vue {
   private blockReordering = false; // prevent @dragEnter from firing during reordering
   private draggable = true;
 
+  // map details to getters/setters to prevent mutation of Vuex store
+  get id() {
+    return this.details.id;
+  }
+  set id(value) {
+    this.$store.commit("updateTask", { ...this.details, id: value });
+  }
+
+  get description() {
+    return this.details.description;
+  }
+  set description(value) {
+    this.$store.commit("updateTask", { ...this.details, description: value });
+  }
+
+  get date() {
+    return this.details.date;
+  }
+  set date(value) {
+    this.$store.commit("updateTask", { ...this.details, date: value });
+  }
+
+  get order() {
+    return this.details.order;
+  }
+  set order(value) {
+    this.$store.commit("updateTask", { ...this.details, order: value });
+  }
+
   get done() {
     return this.details.done;
   }
@@ -169,16 +198,24 @@ export default class Task extends Vue {
       return;
     }
 
-    if (transferData.details.date > this.details.date) {
-      transferData.details.date = this.details.date;
-      transferData.details.order = this.details.order + 0.5;
-    } else if (transferData.details.date < this.details.date) {
-      transferData.details.date = this.details.date;
-      transferData.details.order = this.details.order - 0.5;
-    } else if (transferData.details.order > this.details.order) {
-      transferData.details.order = this.details.order - 0.5;
-    } else {
-      transferData.details.order = this.details.order + 0.5;
+    if (
+      transferData.details.date > this.date ||
+      transferData.details.order < this.order
+    ) {
+      this.$store.commit("updateTask", {
+        ...transferData.details,
+        date: this.date,
+        order: this.order + 0.5
+      });
+    } else if (
+      transferData.details.date < this.date ||
+      transferData.details.order > this.order
+    ) {
+      this.$store.commit("updateTask", {
+        ...transferData.details,
+        date: this.date,
+        order: this.order - 0.5
+      });
     }
 
     this.blockReordering = true;
