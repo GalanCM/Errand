@@ -94,7 +94,7 @@
     border: none;
     background: none;
     cursor: pointer;
-    opacity: 0.7;
+    opacity: 0.5;
   }
 
   .checkbox {

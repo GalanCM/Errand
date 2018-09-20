@@ -5,6 +5,10 @@
       <img src="/logo.svg">
     </div>
     <Organizer></Organizer>
+    <div class="links">
+      <router-link to="about">About</router-link>
+      <a href="https://github.com/GalanCM/FuzzyPlanner">Repo</a>
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -17,6 +21,13 @@
   z-index: -100;
   background-color: #009086;
 }
+.home {
+  display: grid;
+  grid-template-columns:
+    minmax(200px, 1fr)
+    minmax(400px, 2fr)
+    minmax(140px, 1fr);
+}
 
 .left {
   height: 49px;
@@ -24,12 +35,16 @@
   background-color: rgba(255, 255, 255, 0.4);
 }
 
-.home {
-  display: grid;
-  grid-template-columns: minmax(200px, 1fr) minmax(400px, 2fr) minmax(
-      100px,
-      1fr
-    );
+.links {
+  display: flex;
+  height: 50px;
+
+  a {
+    margin: 17px auto;
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+  }
 }
 </style>
 
