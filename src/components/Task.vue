@@ -36,6 +36,7 @@
           </button>
         </transition>
         <input type="checkbox" class="checkbox" v-model="done" @keydown.enter.exact="done = !done" v-show="description !== ''">
+
       </div>
     </drag>
   </drop>
