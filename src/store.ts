@@ -68,42 +68,54 @@ export const mutations = {
       id: number | undefined;
       order: number;
     }
-    const reorderedTasks: MiniTask[] = localState.tasks.map((task) => {
-      return {
-        id: task.id,
-        order: task.order
-      };
-    });
-    reorderedTasks.sort((a: MiniTask, b: MiniTask) => {
-      if (a.order < b.order) {
-        return -1;
-      } else if (a.order > b.order) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
 
-    for (const index of reorderedTasks.keys()) {
-      const miniTask = reorderedTasks[index];
-      const trueTask = localState.tasks.find((task) => task.id === miniTask.id);
-      if (trueTask === undefined) {
-        throw new Error("Sorted task does not exist");
+    for (const dateString of [
+      ...new Set(localState.tasks.map((task) => task.date.toString()))
+    ]) {
+      const date = new Date(dateString);
+
+      const reorderedTasks: MiniTask[] = localState.tasks
+        .filter((task) => {
+          return task.date.getTime() === date.getTime();
+        })
+        .map((task) => {
+          return {
+            id: task.id,
+            order: task.order
+          };
+        });
+
+      reorderedTasks.sort((a: MiniTask, b: MiniTask) => {
+        if (a.order < b.order) {
+          return -1;
+        } else if (a.order > b.order) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+
+      for (const index of reorderedTasks.keys()) {
+        const miniTask = reorderedTasks[index];
+        const trueTask = localState.tasks.find(
+          (task) => task.id === miniTask.id
+        );
+        if (trueTask === undefined) {
+          throw new Error("Sorted task does not exist");
+        }
+        trueTask.order = index;
       }
-      trueTask.order = index;
     }
   },
 
   cleanupOldTasks(localState: RootState) {
     const todaysUpdatedTasks: TaskData[] = [];
 
-    for (let index = localState.tasks.length - 1; index >= 0; index--) {
-      const task = localState.tasks[index];
-
-      if (task.date < getDate(0) && task.done === true) {
-        localState.tasks.splice(index);
+    for (const task of [...localState.tasks].reverse()) {
+      if (task.date.getTime() < getDate(0).getTime() && task.done === true) {
+        localState.tasks.splice(localState.tasks.indexOf(task), 1);
       } else if (task.date.getTime() <= getDate(0).getTime()) {
-        todaysUpdatedTasks.push(localState.tasks[index]);
+        todaysUpdatedTasks.push(task);
       }
     }
 
@@ -144,6 +156,13 @@ const localPeristancePlugin = (localStore: Store<RootState>) => {
     return;
   }
 
+  // watch for mutations and save state
+  localStore.subscribe(
+    (mutation: { type: string; payload: any }, localState: RootState) => {
+      localStorage.setItem("tasks", JSON.stringify(localState.tasks));
+    }
+  );
+
   // restore state if available.
   const savedTasks = localStorage.getItem("tasks");
   if (savedTasks !== null) {
@@ -157,13 +176,6 @@ const localPeristancePlugin = (localStore: Store<RootState>) => {
     localStore.commit("replaceTasks", savedState.tasks);
     localStore.commit("cleanupOldTasks");
   }
-
-  // watch for mutations and save state
-  localStore.subscribe(
-    (mutation: { type: string; payload: any }, localState: RootState) => {
-      localStorage.setItem("tasks", JSON.stringify(localState.tasks));
-    }
-  );
 };
 
 const store = {
