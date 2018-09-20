@@ -30,8 +30,12 @@
           @keydown.enter.exact.prevent="onKeyEnter"
           @keydown.esc="onKeyEsc"
         ></textarea>
+        <transition name="trash-fade">
+          <button class="trash" v-show="isHovered" @click="trash">
+              <img class="trash-icon" src="/trash.svg">
+          </button>
+        </transition>
         <input type="checkbox" class="checkbox" v-model="done" @keydown.enter.exact="done = !done" v-show="description !== ''">
-        <Trash v-show="isHovered" :task="details"></Trash>
       </div>
     </drag>
   </drop>
@@ -85,9 +89,25 @@
     }
   }
 
+  .trash {
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    opacity: 0.7;
+  }
+
   .checkbox {
     vertical-align: middle;
     margin-left: 10px;
+  }
+
+  // TRANSITIONS
+  .trash-fade-enter-active {
+    transition: 300ms opacity ease-out;
+  }
+  .trash-fade-enter {
+    opacity: 0;
   }
 }
 </style>
@@ -156,6 +176,10 @@ export default class Task extends Vue {
     if (this.description !== "") {
       this.$store.commit("updateTask", this.details);
     }
+  }
+
+  private trash() {
+    this.$store.commit("removeTask", this.details);
   }
 
   private onDescriptionInput() {
