@@ -111,6 +111,23 @@ describe("mutations", function() {
         expect(orderValue).to.equal(index);
       }
     });
+    it("should normalize order within a given date", () => {
+      const state = {
+        tasks: [
+          { ...sampleTask, date: getDate(-1), id: 0, order: 0.5, done: false },
+          { ...sampleTask, date: getDate(-1), id: 1, order: 2, done: false },
+          { ...sampleTask, date: getDate(0), id: 2, order: 1, done: false },
+          { ...sampleTask, date: getDate(1), id: 3, order: 1, done: false }
+        ]
+      };
+
+      mutations.normalizeOrder(state);
+
+      expect(state.tasks[0].order).to.equal(0);
+      expect(state.tasks[1].order).to.equal(1);
+      expect(state.tasks[2].order).to.equal(0);
+      expect(state.tasks[3].order).to.equal(0);
+    });
   });
 
   describe("CLEANUP_OLD_TASKS", function() {
@@ -153,6 +170,20 @@ describe("mutations", function() {
         expect(task.date.getTime()).to.equal(getDate(0).getTime());
         expect(task.order).to.equal(index);
       }
+    });
+    it("should delete ONLY completed tasks from previous days", function() {
+      const state = {
+        tasks: [
+          { ...sampleTask, id: 0, date: getDate(-2), order: 1, done: false },
+          { ...sampleTask, id: 1, date: getDate(-1), order: 1, done: true },
+          { ...sampleTask, id: 2, date: getDate(-1), order: 2, done: false },
+          { ...sampleTask, id: 3, date: getDate(0), order: 1, done: false }
+        ]
+      };
+
+      mutations.cleanupOldTasks(state);
+
+      expect(state.tasks).to.have.lengthOf(3);
     });
   });
 });

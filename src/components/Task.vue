@@ -4,12 +4,12 @@
       @dragstart="handleDragStart" 
       @dragend="handleDragEnd"
       :transfer-data="{ details }"
-      :style="{opacity: this.details.order % 1 !== 0 ? 0.2 : 1}"
+      :style="{opacity: this.order % 1 !== 0 ? 0.2 : 1}"
       :draggable="draggable"
     >
       <div 
         class="task" 
-        :class="!details.done && details.description !== '' ? 'active' : '' " 
+        :class="!done && description !== '' ? 'active' : '' " 
         @mouseenter="isHovered = true"
         @mouseleave="isHovered = false"
         @keydown.shift.delete.prevent="onShiftDelete"
@@ -18,10 +18,10 @@
       >
         <img class="drag-indicator" src="drag_indicator.svg" draggable="false">
         <textarea
-          v-model.lazy="details.description" 
+          v-model.lazy="description" 
           placeholder="empty task" 
           class="description"
-          :disabled="details.done" 
+          :disabled="done" 
           ref="description"
           rows="1"
           @input="onDescriptionInput"
@@ -30,7 +30,7 @@
           @keydown.enter.exact.prevent="onKeyEnter"
           @keydown.esc="onKeyEsc"
         ></textarea>
-        <input type="checkbox" class="checkbox" v-model="details.done" @keydown.enter.exact="details.done = !details.done" v-show="details.description !== ''">
+        <input type="checkbox" class="checkbox" v-model="done" @keydown.enter.exact="done = !done" v-show="description !== ''">
         <Trash v-show="isHovered" :task="details"></Trash>
       </div>
     </drag>
@@ -109,15 +109,51 @@ export default class Task extends Vue {
   private blockReordering = false; // prevent @dragEnter from firing during reordering
   private draggable = true;
 
+  // map details to getters/setters to prevent mutation of Vuex store
+  get id() {
+    return this.details.id;
+  }
+  set id(value) {
+    this.$store.commit("updateTask", { ...this.details, id: value });
+  }
+
+  get description() {
+    return this.details.description;
+  }
+  set description(value) {
+    this.$store.commit("updateTask", { ...this.details, description: value });
+  }
+
+  get date() {
+    return this.details.date;
+  }
+  set date(value) {
+    this.$store.commit("updateTask", { ...this.details, date: value });
+  }
+
+  get order() {
+    return this.details.order;
+  }
+  set order(value) {
+    this.$store.commit("updateTask", { ...this.details, order: value });
+  }
+
+  get done() {
+    return this.details.done;
+  }
+  set done(value) {
+    this.$store.commit("updateTask", { ...this.details, done: value });
+  }
+
   private mounted() {
     this.onDescriptionInput();
-    if (this.details.id === undefined) {
+    if (this.id === undefined) {
       (this.$refs.description as HTMLElement).focus();
     }
   }
 
   private updated() {
-    if (this.details.description !== "") {
+    if (this.description !== "") {
       this.$store.commit("updateTask", this.details);
     }
   }
@@ -138,7 +174,7 @@ export default class Task extends Vue {
     event.preventDefault();
     (this.$refs.description as HTMLElement).blur();
 
-    if (this.details.id === undefined) {
+    if (this.id === undefined) {
       this.$emit("create-new");
     }
   }
@@ -155,23 +191,28 @@ export default class Task extends Vue {
     transferData: { details: TaskData },
     event: DragEvent
   ) {
-    if (
-      this.details.id === transferData.details.id ||
-      this.blockReordering === true
-    ) {
+    if (this.id === transferData.details.id || this.blockReordering === true) {
       return;
     }
 
-    if (transferData.details.date > this.details.date) {
-      transferData.details.date = this.details.date;
-      transferData.details.order = this.details.order + 0.5;
-    } else if (transferData.details.date < this.details.date) {
-      transferData.details.date = this.details.date;
-      transferData.details.order = this.details.order - 0.5;
-    } else if (transferData.details.order > this.details.order) {
-      transferData.details.order = this.details.order - 0.5;
-    } else {
-      transferData.details.order = this.details.order + 0.5;
+    if (
+      transferData.details.date > this.date ||
+      transferData.details.order < this.order
+    ) {
+      this.$store.commit("updateTask", {
+        ...transferData.details,
+        date: this.date,
+        order: this.order + 0.5
+      });
+    } else if (
+      transferData.details.date < this.date ||
+      transferData.details.order > this.order
+    ) {
+      this.$store.commit("updateTask", {
+        ...transferData.details,
+        date: this.date,
+        order: this.order - 0.5
+      });
     }
 
     this.blockReordering = true;
@@ -187,7 +228,7 @@ export default class Task extends Vue {
     this.$store.commit("removeTask", this.details);
   }
   private onShiftArrowUp() {
-    this.details.order -= 1.5;
+    this.order -= 1.5;
     this.$store.commit("normalizeOrder");
     this.isHovered = false;
     this.$nextTick(() => {
@@ -195,7 +236,7 @@ export default class Task extends Vue {
     });
   }
   private onShiftArrowDown() {
-    this.details.order += 1.5;
+    this.order += 1.5;
     this.$store.commit("normalizeOrder");
     this.isHovered = false;
     this.$nextTick(() => {

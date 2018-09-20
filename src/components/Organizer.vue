@@ -168,8 +168,11 @@ export default class Organizer extends Vue {
     transferData: { details: TaskData },
     event: DragEvent
   ) {
-    transferData.details.date = this.getDateWithOffset(offset);
-    transferData.details.order = 0.5;
+    this.$store.commit("updateTask", {
+      ...transferData.details,
+      date: this.getDateWithOffset(offset),
+      order: 0.5
+    });
   }
 }
 </script>
