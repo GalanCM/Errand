@@ -118,9 +118,8 @@ import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
 
 import { TaskData } from "@/types";
-import Trash from "@/components/Trash.vue";
 
-@Component({ components: { Trash } })
+@Component
 export default class Task extends Vue {
   @Prop() private details!: TaskData;
 

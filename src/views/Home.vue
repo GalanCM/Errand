@@ -1,15 +1,35 @@
 <template>
   <div class="home">
+    <div class="color-bar"></div>
+    <div class="left">
+      <img src="/logo.svg">
+    </div>
     <Organizer></Organizer>
     <router-view></router-view>
   </div>
 </template>
 
 <style lang="less" scoped>
+.color-bar {
+  position: fixed;
+  height: 50px;
+  width: 100vw;
+  z-index: -100;
+  background-color: #009086;
+}
+
+.left {
+  height: 49px;
+  width: 200px;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
 .home {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(400px, 2fr) minmax(
+      100px,
+      1fr
+    );
 }
 </style>
 

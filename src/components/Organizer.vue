@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="organizer-wrapper">
     <section class="organizer">
       <transition-group :name="isSorting ? 'slide-reorder' : ''" tag="div">
         <template v-for="offset in [0,1,2]">
@@ -26,11 +26,12 @@
 </template>
 
 <style lang="less" scoped>
+.organizer-wrapper {
+  grid-column: ~"2 / 3";
+}
+
 .organizer {
-  width: 50%;
-  min-width: 320px;
-  min-height: 100vh;
-  margin: 0 auto;
+  margin-top: 12px;
   background-color: white;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
 }
