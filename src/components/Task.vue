@@ -30,11 +30,9 @@
           @keydown.enter.exact.prevent="onKeyEnter"
           @keydown.esc="onKeyEsc"
         ></textarea>
-        <transition name="trash-fade">
-          <button class="trash" v-show="isHovered" @click="trash">
-              <img class="trash-icon" src="/trash.svg">
-          </button>
-        </transition>
+        <button class="trash" @click="trash">
+            <img class="trash-icon" src="/trash.svg">
+        </button>
         <input type="checkbox" class="checkbox" v-model="done" @keydown.enter.exact="done = !done" v-show="description !== ''">
 
       </div>
@@ -91,24 +89,22 @@
   }
 
   .trash {
+    display: inline-block;
+    height: 14px;
     padding: 0;
+    margin-left: 10px;
     border: none;
     background: none;
     cursor: pointer;
+    opacity: 0.2;
+  }
+  &:hover .trash {
     opacity: 0.5;
   }
 
   .checkbox {
     vertical-align: middle;
     margin-left: 10px;
-  }
-
-  // TRANSITIONS
-  .trash-fade-enter-active {
-    transition: 300ms opacity ease-out;
-  }
-  .trash-fade-enter {
-    opacity: 0;
   }
 }
 </style>
@@ -122,7 +118,8 @@ import { TaskData } from "@/types";
 
 @Component
 export default class Task extends Vue {
-  @Prop() private details!: TaskData;
+  @Prop()
+  private details!: TaskData;
 
   private isHovered = false;
 
