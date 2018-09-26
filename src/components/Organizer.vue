@@ -28,22 +28,35 @@
 <style lang="less" scoped>
 .organizer-wrapper {
   grid-column: ~"2 / 3";
+
+  @media screen and (max-width: 800px) {
+    grid-column: ~"1 / 3";
+    grid-row: 3;
+  }
 }
 
 .organizer {
   margin-top: 12px;
   background-color: white;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+
+  @media screen and (max-width: 800px) {
+    margin-top: 0;
+  }
 }
 
 .day-header {
   margin: 0;
-  padding: 3px 0 3px 10px;
+  padding: 3px 10px;
   border-bottom: 1px dashed white;
   background-color: #009086;
   color: white;
   font-size: 26px;
   font-weight: 500;
+
+  @media screen and (max-width: 800px) {
+    text-align: right;
+  }
 
   &:not(:first-child) {
     margin-top: 5px;
@@ -92,7 +105,8 @@ import { setTimeout } from "timers";
 
 @Component({ components: { Task } })
 export default class Organizer extends Vue {
-  @State("tasks") private tasks!: TaskData[];
+  @State("tasks")
+  private tasks!: TaskData[];
   private newTask: TaskData | null = null;
 
   private isSorting = false;
