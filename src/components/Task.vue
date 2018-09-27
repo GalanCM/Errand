@@ -217,6 +217,16 @@ export default class Task extends Vue {
   }
 
   private handleDragStart(transferData: any, event: DragEvent) {
+    if (event.target) {
+      const dragIndicator = (event.target as HTMLElement).querySelector(
+        ".drag-indicator"
+      ) as HTMLElement;
+      const rightLimit = dragIndicator.getBoundingClientRect().right;
+      if (event.clientX > rightLimit) {
+        event.preventDefault();
+        return;
+      }
+    }
     (this.$refs.description as HTMLElement).blur();
     this.$emit("start-sorting");
   }

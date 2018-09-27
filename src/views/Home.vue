@@ -20,6 +20,11 @@
   width: 100vw;
   z-index: -100;
   background-color: #009086;
+
+  @media screen and (max-width: 800px) {
+    grid-column: ~"1 / 3";
+    grid-row: ~"1 / 2";
+  }
 }
 .home {
   display: grid;
@@ -27,12 +32,26 @@
     minmax(200px, 1fr)
     minmax(400px, 2fr)
     minmax(140px, 1fr);
+
+  @media screen and (max-width: 800px) {
+    grid-template-columns: 160px 1fr;
+    grid-template-rows: repeat(3, min-content);
+  }
 }
 
 .left {
   height: 49px;
   width: 200px;
   background-color: rgba(255, 255, 255, 0.4);
+
+  @media screen and (max-width: 800px) {
+    z-index: 100;
+
+    img {
+      transform: scale(0.8);
+      transform-origin: left 14%;
+    }
+  }
 }
 
 .links {
