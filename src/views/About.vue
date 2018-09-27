@@ -29,7 +29,6 @@
           <li><strong>Better Keyboard Navigation.</strong> Currently, you can't really use the app without a mouse.</li>
           <li><strong>Accessibility & Compatibility Pass.</strong> I want to make sure this is usable for as many people as possible.</li>
           <li><strong>Server-side Saving.</strong> This is a lot more work than local saving, but I should probably flex my back-end skills.</li>
-          <li><strong>Mobile Browser Support.</strong> I'd intended this to support mobile from the start, but implementing drag-and-drop on mobile is more complicated than desktop.</li>
         </ul>
         <p>
           Hopefully you like what you see. And whether you intend to hire me or not, I'd love to know what you think.
