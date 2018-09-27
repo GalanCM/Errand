@@ -59,10 +59,16 @@
   .drag-indicator {
     margin-left: -3px;
     padding-right: 2px;
-    opacity: 0;
+    opacity: 0.1;
     cursor: move;
+    transition: 150ms opacity ease-in-out;
+
+    &:hover {
+      opacity: 0.9 !important;
+    }
   }
   &:hover .drag-indicator {
+    /* indicator opacity when hovering task */
     opacity: 0.7;
   }
 
@@ -96,10 +102,16 @@
     border: none;
     background: none;
     cursor: pointer;
-    opacity: 0.2;
+    opacity: 0.1;
+    transition: 150ms opacity ease-in-out;
+
+    &:hover {
+      opacity: 0.8 !important;
+    }
   }
   &:hover .trash {
-    opacity: 0.5;
+    /* trash opacity when hovering task */
+    opacity: 0.4;
   }
 
   .checkbox {
