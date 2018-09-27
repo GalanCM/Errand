@@ -105,8 +105,14 @@
     opacity: 0.1;
     transition: 150ms opacity ease-in-out;
 
-    &:hover {
+    &:hover,
+    &:focus {
       opacity: 0.8 !important;
+
+      &::-moz-focus-inner {
+        border: 0;
+        background-color: blue;
+      }
     }
   }
   &:hover .trash {
