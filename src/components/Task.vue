@@ -33,8 +33,9 @@
         <button class="trash" @click="trash">
             <img class="trash-icon" src="/trash.svg">
         </button>
-        <input type="checkbox" class="checkbox" v-model="done" @keydown.enter.exact="done = !done" v-show="description !== ''">
-
+        <div class="done-touch-buffer" @click="done = !done">
+          <input type="checkbox" class="done-checkbox" v-model="done" @keydown.enter.exact="done = !done" v-show="description !== ''">
+        </div>
       </div>
     </drag>
   </drop>
@@ -46,7 +47,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 2px 10px 2px 6px;
+  padding: 2px 0 2px 6px;
   margin: 2px 0;
   border-left: 4px solid transparent;
   font-size: 16px;
@@ -66,10 +67,17 @@
     &:hover {
       opacity: 0.9 !important;
     }
+
+    @media (pointer: coarse) {
+      transform: scale(1.2);
+      padding: 0 8px 0 5px;
+      margin: 0;
+      opacity: 0.6 !important;
+    }
   }
   &:hover .drag-indicator {
     /* indicator opacity when hovering task */
-    opacity: 0.7;
+    opacity: 0;
   }
 
   .description {
@@ -82,6 +90,10 @@
     overflow: hidden;
     outline: none !important;
     border: 1px solid transparent;
+
+    @media (pointer: coarse) {
+      font-size: 18px;
+    }
 
     &:focus {
       background-color: #e5e5e5;
@@ -114,15 +126,22 @@
         background-color: blue;
       }
     }
+
+    @media (pointer: coarse) {
+      opacity: 0.4 !important;
+    }
   }
   &:hover .trash {
     /* trash opacity when hovering task */
     opacity: 0.4;
   }
 
-  .checkbox {
+  .done-touch-buffer {
+    margin-left: 20px;
+  }
+  .done-checkbox {
     vertical-align: middle;
-    margin-left: 10px;
+    margin: 10px;
   }
 }
 </style>
