@@ -25,10 +25,11 @@
           There is still work left for me to do, but the sooner I can show this to clients and employers, the better. The following tasks should be completed over the next couple weeks:
         </p>
         <ul>
-          <li><strong>User Testing.</strong> I have done very little user testing, and what little I have done has already suggested that I need to make some changes.</li>
-          <li><strong>Better Keyboard Navigation.</strong> Currently, you can't really use the app without a mouse.</li>
-          <li><strong>Accessibility & Compatibility Pass.</strong> I want to make sure this is usable for as many people as possible.</li>
           <li><strong>Server-side Saving.</strong> This is a lot more work than local saving, but I should probably flex my back-end skills.</li>
+          <li><strong>Better Keyboard Navigation.</strong> Currently, you can't really use the app without a mouse.</li>
+          <li><strong>Onboarding.</strong> Some light tutorials and tooltips would help new users learn the interface.</li>
+          <li><strong>User Testing.</strong> I have done very little user testing, and what little I have done has already suggested that I need to make some changes.</li>
+          <li><strong>Accessibility & Compatibility Pass.</strong> I want to make sure this is usable for as many people as possible.</li>
         </ul>
         <p>
           Hopefully you like what you see. And whether you intend to hire me or not, I'd love to know what you think.
