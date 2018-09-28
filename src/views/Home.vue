@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="color-bar"></div>
-    <div class="left">
+    <div class="logo">
       <img src="/logo.svg">
     </div>
     <Organizer></Organizer>
@@ -39,13 +39,13 @@
   }
 }
 
-.left {
+.logo {
   height: 49px;
   width: 200px;
   background-color: rgba(255, 255, 255, 0.4);
 
   @media screen and (max-width: 800px) {
-    z-index: 100;
+    z-index: 0;
 
     img {
       transform: scale(0.8);

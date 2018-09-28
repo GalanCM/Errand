@@ -56,7 +56,13 @@
   margin: 20px auto;
   overflow: hidden;
   background-color: white;
-  min-width: 320px;
+  min-width: 460px;
+
+  @media screen and (max-width: 480px) {
+    width: 100%;
+    margin: 20px 10px;
+    min-width: 300px;
+  }
 }
 
 header {
@@ -83,8 +89,8 @@ header {
 }
 
 main {
-  margin: 15px 15px;
-  padding: 0 25px;
+  margin: 15px 0;
+  padding: 0 35px;
   height: 100%;
   font-size: 14px;
   line-height: 1.5;
