@@ -41,7 +41,6 @@
 
 .logo {
   height: 49px;
-  width: 200px;
   background-color: rgba(255, 255, 255, 0.4);
 
   @media screen and (max-width: 800px) {
@@ -49,7 +48,7 @@
 
     img {
       transform: scale(0.8);
-      transform-origin: left 41%;
+      transform-origin: left 50%;
     }
   }
 }

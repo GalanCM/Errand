@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="200"
-   height="102"
-   viewBox="0 0 52.916665 26.987502"
+   width="161"
+   height="100"
+   viewBox="0 0 42.597915 26.458335"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.2 5c3e80d, 2017-08-06"
@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="-234.46257"
-     inkscape:cy="160"
+     inkscape:cx="115.85625"
+     inkscape:cy="61.691242"
      inkscape:document-units="px"
      inkscape:current-layer="g4795"
      showgrid="false"
@@ -36,7 +36,8 @@
      inkscape:window-height="856"
      inkscape:window-x="0"
      inkscape:window-y="0"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     showguides="false" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -53,7 +54,7 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-270.01249)">
+     transform="translate(0,-270.54166)">
     <g
        id="g4760"
        transform="translate(0,269.12206)"
@@ -61,25 +62,30 @@
       <g
          id="g4795"
          transform="matrix(1.2284419,0,0,1.2284419,-1.2088386,-6.5902851)">
+        <path
+           style="fill:none;fill-rule:evenodd;stroke:#009086;stroke-width:0.21538123;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="M 0.98404214,17.18173 H 44.06029"
+           id="path4750"
+           inkscape:connector-curvature="0" />
         <text
            xml:space="preserve"
            style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0061ac;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            x="3.8411896"
-           y="16.710165"
+           y="16.623791"
            id="text4749"><tspan
              sodipodi:role="line"
              id="tspan4747"
              x="3.8411896"
-             y="16.710165"
+             y="16.623791"
              style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Nunito;-inkscape-font-specification:'Nunito Bold';fill:#0061ac;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-opacity:1">Fuzzy</tspan></text>
         <text
            id="text4753"
-           y="24.814497"
+           y="24.958479"
            x="4.0877609"
            style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0061ac;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            xml:space="preserve"><tspan
              style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Nunito Sans';-inkscape-font-specification:'Nunito Sans Bold';fill:#0061ac;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-opacity:1"
-             y="24.814497"
+             y="24.958479"
              x="4.0877609"
              id="tspan4751"
              sodipodi:role="line">Tasks</tspan></text>
