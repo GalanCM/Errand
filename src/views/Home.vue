@@ -49,7 +49,7 @@
 
     img {
       transform: scale(0.8);
-      transform-origin: left 14%;
+      transform-origin: left 41%;
     }
   }
 }
