@@ -7,7 +7,7 @@
     <Organizer></Organizer>
     <div class="links">
       <router-link to="about">About</router-link>
-      <a href="https://github.com/GalanCM/FuzzyPlanner">Repo</a>
+      <!-- <a href="https://github.com/GalanCM/Errand">Repo</a> -->
     </div>
     <router-view></router-view>
   </div>
@@ -19,7 +19,7 @@
   height: 50px;
   width: 100vw;
   z-index: -100;
-  background-color: #009086;
+  background-color: #494959;
 
   @media screen and (max-width: 800px) {
     grid-column: ~"1 / 3";
@@ -34,23 +34,15 @@
     minmax(140px, 1fr);
 
   @media screen and (max-width: 800px) {
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: auto min-content;
     grid-template-rows: repeat(3, min-content);
   }
 }
 
 .logo {
+  margin: 0 auto;
   height: 49px;
   background-color: rgba(255, 255, 255, 0.4);
-
-  @media screen and (max-width: 800px) {
-    z-index: 0;
-
-    img {
-      transform: scale(0.8);
-      transform-origin: left 50%;
-    }
-  }
 }
 
 .links {
@@ -58,10 +50,15 @@
   height: 50px;
 
   a {
-    margin: 17px auto;
+    padding: 17px 20px;
     color: white;
+    background-color: #009086;
     font-size: 18px;
     text-decoration: none;
+
+    &:first-child {
+      margin-left: auto;
+    }
   }
 }
 </style>

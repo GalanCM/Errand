@@ -4,21 +4,33 @@
       <transition-group :name="isSorting ? 'slide-reorder' : ''" tag="div">
         <template v-for="offset in [0,1,2]">
           <h2 class="day-header" :key="'day' + offset">{{getDayNameFromOffset(offset)}}</h2>
-          <Task v-for="task in getTasksByDateOffset(offset)" :details="task" :key="task.id" @start-sorting="startSorting" @stop-sorting="stopSorting"></Task>
+          <Task
+            v-for="task in getTasksByDateOffset(offset)"
+            :details="task"
+            :key="task.id"
+            @start-sorting="startSorting"
+            @stop-sorting="stopSorting"
+          ></Task>
           <drop
             v-if="getTasksByDateOffset(offset).length === 0 && ( newTask === null || newTask.date.getTime() !== getDateWithOffset( offset ).getTime() )"
             class="drop"
             :key="'drop' + offset"
             @dragenter="handleDropEnter(offset, ...arguments)"
           ></drop>
-          <button class="new-button"
+          <button
+            class="new-button"
             @click="createNewTaskWithDateOffset(offset)"
             v-if="newTask === null || newTask.date.getTime() !== getDateWithOffset(offset).getTime()"
             :key="'button' + offset"
-          >
-            + New Task
-          </button>
-          <Task v-else class="new-task" :details="newTask" @description-blurred="closeNewTask" @create-new="$nextTick( () => $nextTick( () => createNewTaskWithDateOffset(offset) ) )" :key="'newTaskDay' + offset"></Task>
+          >+ New Task</button>
+          <Task
+            v-else
+            class="new-task"
+            :details="newTask"
+            @description-blurred="closeNewTask"
+            @create-new="$nextTick( () => $nextTick( () => createNewTaskWithDateOffset(offset) ) )"
+            :key="'newTaskDay' + offset"
+          ></Task>
         </template>
       </transition-group>
     </section>
@@ -36,9 +48,10 @@
 }
 
 .organizer {
+  position: relative;
   margin-top: 12px;
   background-color: white;
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
 
   @media screen and (max-width: 800px) {
     margin-top: 0;
@@ -55,7 +68,7 @@
   font-weight: 500;
 
   @media screen and (max-width: 800px) {
-    text-align: right;
+    padding-left: 20px;
   }
 
   &:not(:first-child) {
