@@ -48,17 +48,14 @@
 .links {
   display: flex;
   height: 50px;
+  margin-left: auto;
+  background-color: #009086;
 
   a {
-    padding: 17px 20px;
+    margin: auto 20px;
     color: white;
-    background-color: #009086;
     font-size: 18px;
     text-decoration: none;
-
-    &:first-child {
-      margin-left: auto;
-    }
   }
 }
 </style>

@@ -5,17 +5,18 @@
 </template>
 
 <style>
-@import url("https://fonts.googleapis.com/css?family=Zilla+Slab:500|Work+Sans:400,400i,500,700,700i");
+@import url("https://rsms.me/inter/inter-ui.css");
 </style>
 
 
 <style lang="less">
 @import "/static/assets/normalize.css";
+@import "globals.less";
 
 body {
-  font-family: "Work Sans", Arial, sans-serif;
   background-color: #e5e5e5;
   margin: 0;
+  .ui-font();
 }
 
 h1,

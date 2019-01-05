@@ -38,6 +38,8 @@
 </template>
 
 <style lang="less" scoped>
+@import "../globals.less";
+
 .organizer-wrapper {
   grid-column: ~"2 / 3";
 
@@ -82,9 +84,9 @@
   background-color: #e5e5e5;
   border: none;
   color: #006fc0;
+  .ui-font();
   font-size: 16px;
-  font-weight: 800;
-  font-family: "Work Sans", Arial, sans-serif;
+  font-weight: 700 !important;
 
   &:not(:first-child) {
     margin-top: 2px;
