@@ -94,6 +94,7 @@
     font-family: inherit;
     font-size: inherit;
     font-variant: inherit;
+    font-weight: inherit;
     overflow: hidden;
     outline: none !important;
     border: 1px solid transparent;
