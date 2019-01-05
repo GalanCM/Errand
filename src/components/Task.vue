@@ -93,6 +93,7 @@
     border: none;
     font-family: inherit;
     font-size: inherit;
+    font-variant: inherit;
     overflow: hidden;
     outline: none !important;
     border: 1px solid transparent;
