@@ -208,6 +208,9 @@ export default class Task extends Vue {
   }
 
   private mounted() {
+    window.addEventListener("load", event => {
+      this.onDescriptionInput();
+    });
     this.onDescriptionInput();
     if (this.id === undefined) {
       (this.$refs.description as HTMLElement).focus();
@@ -215,6 +218,7 @@ export default class Task extends Vue {
   }
 
   private updated() {
+    this.onDescriptionInput();
     if (this.description !== "") {
       this.$store.commit("updateTask", this.details);
     }

@@ -4,11 +4,6 @@
   </div>
 </template>
 
-<style>
-@import url("https://rsms.me/inter/inter-ui.css");
-</style>
-
-
 <style lang="less">
 @import "/static/assets/normalize.css";
 @import "globals.less";
