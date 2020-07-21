@@ -1,31 +1,34 @@
 <template>
   <div class="modal-container" role="presentation">
-    <form class="sign-in" v-show="form === 'sign-in'">
-      <header>Sign In</header>
+    <form class="sign-in">
+      <header>
+        {{ formName.value === "sign-in" ? "Sign In" : "Sign Up" }}
+      </header>
       <main>
         <input name="email" v-model="email" type="email" />
         <label for="email">Email Address</label>
         <input name="password" v-model="password" type="password" />
         <label for="password">Password</label>
-        <p>Not registered? <a @click.prevent="form = 'sign-up'">Sign Up</a></p>
-      </main>
-    </form>
-    <form class="sign-in" v-show="form === 'sign-up'">
-      <header>Sign Up</header>
-      <main>
-        <input name="email" v-model="email" type="email" />
-        <label for="email">Email Address</label>
-        <input name="password" v-model="password" type="password" />
-        <label for="password">Password</label>
-        <input
-          name="confirm-password"
-          v-model="confirmPassword"
-          type="password"
-        />
-        <label for="confirm-password">Confirm Password</label>
-        <p>
-          Already registered?
-          <a @click.prevent="form = 'sign-in'">Return to Sign In</a>
+        <transition name="fly-left">
+          <input
+            v-show="formName.value === 'sign-up'"
+            name="confirm-password"
+            v-model="confirmPassword"
+            type="password"
+          />
+        </transition>
+        <transition name="fly-left">
+          <label v-show="formName.value === 'sign-up'" for="confirm-password"
+            >Confirm Password</label
+          >
+        </transition>
+        <p v-if="formName.value === 'sign-in'" class="to-sign-up">
+          Not registered? <router-link to="/sign-up">Sign Up →</router-link>
+        </p>
+        <p v-else class="to-sign-in">
+          <router-link to="/sign-in"
+            >← Sign In with Existing Account</router-link
+          >
         </p>
       </main>
     </form>
@@ -35,6 +38,7 @@
 <style lang="less" scoped>
 .sign-in {
   flex-direction: column;
+  overflow: hidden;
 
   header {
     display: flex;
@@ -80,6 +84,9 @@
         border-color: black;
       }
     }
+    input[name="password"] {
+      margin-top: 35px;
+    }
 
     label {
       margin: 2px 0 15px;
@@ -90,29 +97,59 @@
 
     a {
       font-weight: 500;
+      text-decoration: none;
       color: #009086;
       cursor: pointer;
     }
+
+    .to-sign-in,
+    .to-sign-up {
+      margin-top: 30px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+    .to-sign-up {
+      text-align: right;
+    }
   }
+}
+
+// TRANSITIONS
+input.fly-left-enter-active,
+input.fly-left-leave-active {
+  transition: opacity 400ms, transform 500ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+label.fly-left-enter-active,
+label.fly-left-leave-active {
+  transition: opacity 500ms, transform 500ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+.fly-left-enter,
+.fly-left-leave-to {
+  opacity: 0;
+  transform: translateX(100%);
 }
 </style>
 
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "@vue/composition-api";
 
 export default defineComponent({
-  setup() {
+  setup(props, context) {
     const email = ref("");
     const password = ref("");
     const confirmPassword = ref("");
 
-    const form = ref<"sign-in" | "sign-up">("sign-in");
+    const formName = computed(() =>
+      ref<"sign-in" | "sign-up">(
+        context.root.$route.path === "/sign-in" ? "sign-in" : "sign-up"
+      )
+    );
 
     return {
       email,
       password,
       confirmPassword,
-      form
+      formName
     };
   }
 });
