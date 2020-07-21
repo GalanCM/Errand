@@ -2,12 +2,12 @@
   <div class="home">
     <div class="color-bar"></div>
     <div class="logo">
-      <img src="/logo.svg">
+      <img src="/logo.svg" />
     </div>
     <Organizer></Organizer>
     <div class="links">
       <router-link to="about">About</router-link>
-      <!-- <a href="https://github.com/GalanCM/Errand">Repo</a> -->
+      <router-link to="sign-in">Sign In</router-link>
     </div>
     <router-view></router-view>
   </div>

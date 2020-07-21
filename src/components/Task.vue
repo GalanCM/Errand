@@ -4,19 +4,23 @@
       @dragstart="handleDragStart"
       @dragend="handleDragEnd"
       :transfer-data="{ details }"
-      :style="{opacity: this.order % 1 !== 0 ? 0.2 : 1}"
+      :style="{ opacity: this.order % 1 !== 0 ? 0.2 : 1 }"
       :draggable="draggable"
     >
       <div
         class="task"
-        :class="!done && description !== '' ? 'active' : '' "
+        :class="!done && description !== '' ? 'active' : ''"
         @mouseenter="isHovered = true"
         @mouseleave="isHovered = false"
         @keydown.shift.delete.prevent="onShiftDelete"
         @keydown.shift.up.prevent="onShiftArrowUp"
         @keydown.shift.down.prevent="onShiftArrowDown"
       >
-        <img class="drag-indicator" src="drag_indicator.svg" draggable="false">
+        <img
+          class="drag-indicator"
+          src="drag_indicator.svg"
+          draggable="false"
+        />
         <textarea
           v-model.lazy="description"
           placeholder="empty task"
@@ -31,7 +35,7 @@
           @keydown.esc="onKeyEsc"
         ></textarea>
         <button class="trash" @click="trash">
-          <img class="trash-icon" src="/trash.svg">
+          <img class="trash-icon" src="/trash.svg" />
         </button>
         <div class="done-touch-buffer" @click="done = !done">
           <input
@@ -40,7 +44,7 @@
             v-model="done"
             @keydown.enter.exact="done = !done"
             v-show="description !== ''"
-          >
+          />
         </div>
       </div>
     </drag>

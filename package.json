@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vue/cli": "^4.4.6",
+    "@vue/composition-api": "^1.0.0-beta.4",
     "core-js": "^3.6.5",
     "mobile-drag-drop": "^2.3.0-rc.2",
     "normalize.css": "^8.0.1",

@@ -1,4 +1,5 @@
 import Vue from "vue";
+import VueCompositionAPI from "@vue/composition-api";
 import App from "./App.vue";
 import router from "@/router";
 import store from "@/store";
@@ -6,6 +7,8 @@ import store from "@/store";
 import { Drag, Drop } from "vue-drag-drop";
 Vue.component("drag", Drag);
 Vue.component("drop", Drop);
+
+Vue.use(VueCompositionAPI);
 
 import { polyfill } from "mobile-drag-drop";
 import { scrollBehaviourDragImageTranslateOverride } from "mobile-drag-drop/scroll-behaviour";
